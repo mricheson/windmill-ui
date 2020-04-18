@@ -16,6 +16,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import { AuthenticatonStoreContext } from '../store/AuthenticationStore';
 import { observer } from 'mobx-react-lite';
 import MainContent from './MainContent';
+import { useHistory } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -28,6 +29,10 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         flexGrow: 1,
+    },
+    titleText: {
+        cursor: 'pointer',
+        width: 'min-content'
     },
     drawer: {
         width: drawerWidth,
@@ -51,6 +56,7 @@ const Layout = observer(() => {
     const classes = useStyles();
     const { isLoggedIn } = useContext(AuthenticatonStoreContext);
     const [open, setOpen] = React.useState(true);
+    let history = useHistory();
 
     const toggleMenu = () => setOpen(!open);
 
@@ -61,9 +67,11 @@ const Layout = observer(() => {
                     <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={toggleMenu} disabled={!isLoggedIn}>
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" className={classes.title}>
-                        Windmill
-                    </Typography>
+                    <div className={classes.title}>
+                        <Typography variant="h6" className={classes.titleText} onClick={() => history.push('/')}>
+                            Windmill
+                        </Typography>
+                    </div>
                     <User />
                 </Toolbar>
             </AppBar>
@@ -71,7 +79,7 @@ const Layout = observer(() => {
                 className={classes.drawer}
                 variant="persistent"
                 anchor="left"
-                open={open && isLoggedIn}
+                open={Boolean(open && isLoggedIn)}
                 classes={{
                     paper: classes.drawerPaper,
                 }}
@@ -79,26 +87,26 @@ const Layout = observer(() => {
                 <Toolbar />
                 <div className={classes.drawerContainer}>
                     <List>
-                        <ListItem button>
+                        <ListItem button onClick={() => history.push('/transactions')}>
                             <ListItemIcon>
                                 <ReceiptIcon />
                             </ListItemIcon>
                             <ListItemText primary="Transactions" />
                         </ListItem>
-                        <ListItem button>
+                        <ListItem>
                             <ListItemIcon>
                                 <TableChartIcon />
                             </ListItemIcon>
                             <ListItemText primary="Budget" />
                         </ListItem>
                         <List component="div" disablePadding>
-                            <ListItem button className={classes.nested}>
+                            <ListItem button className={classes.nested} onClick={() => history.push('/budgets/open')}>
                                 <ListItemText primary="Open" />
                             </ListItem>
-                            <ListItem button className={classes.nested}>
+                            <ListItem button className={classes.nested} onClick={() => history.push('/budgets/closed')}>
                                 <ListItemText primary="Closed" />
                             </ListItem>
-                            <ListItem button className={classes.nested}>
+                            <ListItem button className={classes.nested} onClick={() => history.push('/budgets/template')}>
                                 <ListItemText primary="Template" />
                             </ListItem>
                         </List>
@@ -108,7 +116,7 @@ const Layout = observer(() => {
                             </ListItemIcon>
                             <ListItemText primary="Mortgate" />
                         </ListItem>
-                        <ListItem button>
+                        <ListItem button onClick={() => history.push('/institutions')}>
                             <ListItemIcon>
                                 <AccountBalanceIcon />
                             </ListItemIcon>

@@ -2,6 +2,11 @@ import React, { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import { AuthenticatonStoreContext } from '../store/AuthenticationStore';
 import { makeStyles } from '@material-ui/core';
+import { Switch, Route } from 'react-router-dom';
+import Transactions from './Transactions/Transactions';
+import BudgetList from './Budget/BudgetList';
+import BudgetTemplate from './Budget/BudgetTemplate';
+import Institutions from './Institutions/Institutions';
 
 const useStyles = makeStyles(theme => ({
     offset: theme.mixins.toolbar,
@@ -11,11 +16,29 @@ const MainContent = observer(() => {
     const classes = useStyles();
     const { isLoggedIn } = useContext(AuthenticatonStoreContext);
 
-    const content = isLoggedIn ? <div>Welcome</div> : <div>Please log in</div>;
     return (
         <>
             <div className={classes.offset} />
-            {content}
+            <Switch>
+                <Route exact path="/transactions">
+                    <Transactions />
+                </Route>
+                <Route exact path="/budgets/open">
+                    <BudgetList />
+                </Route>
+                <Route exact path="/budgets/closed">
+                    <BudgetList />
+                </Route>
+                <Route exact path="/budgets/template">
+                    <BudgetTemplate />
+                </Route>
+                <Route exact path="/institutions">
+                    <Institutions />
+                </Route>
+                <Route exact path="/">
+                    {isLoggedIn ? <div>Welcome</div> : <div>Please log in</div>}
+                </Route>
+            </Switch>
         </>
     );
 });
