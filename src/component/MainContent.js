@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import { AuthenticatonStoreContext } from '../store/AuthenticationStore';
 import { makeStyles } from '@material-ui/core';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import Transactions from './Transactions/Transactions';
 import BudgetList from './Budget/BudgetList';
 import BudgetTemplate from './Budget/BudgetTemplate';
@@ -15,6 +15,12 @@ const useStyles = makeStyles(theme => ({
 const MainContent = observer(() => {
     const classes = useStyles();
     const { isLoggedIn } = useContext(AuthenticatonStoreContext);
+    let location = useLocation();
+    let history = useHistory();
+
+    if (!isLoggedIn && location.pathname !== '/') {
+        history.push('/');
+    }
 
     return (
         <>
