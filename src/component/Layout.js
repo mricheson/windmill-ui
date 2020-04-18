@@ -16,7 +16,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import { AuthenticatonStoreContext } from '../store/AuthenticationStore';
 import { observer } from 'mobx-react-lite';
 import MainContent from './MainContent';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -57,6 +57,7 @@ const Layout = observer(() => {
     const { isLoggedIn } = useContext(AuthenticatonStoreContext);
     const [open, setOpen] = React.useState(true);
     let history = useHistory();
+    let location = useLocation();
 
     const toggleMenu = () => setOpen(!open);
 
@@ -87,7 +88,7 @@ const Layout = observer(() => {
                 <Toolbar />
                 <div className={classes.drawerContainer}>
                     <List>
-                        <ListItem button onClick={() => history.push('/transactions')}>
+                        <ListItem button onClick={() => history.push('/transactions')} selected={location.pathname==='/transactions'}>
                             <ListItemIcon>
                                 <ReceiptIcon />
                             </ListItemIcon>
@@ -100,13 +101,13 @@ const Layout = observer(() => {
                             <ListItemText primary="Budget" />
                         </ListItem>
                         <List component="div" disablePadding>
-                            <ListItem button className={classes.nested} onClick={() => history.push('/budgets/open')}>
+                            <ListItem button className={classes.nested} onClick={() => history.push('/budgets/open')} selected={location.pathname==='/budgets/open'}>
                                 <ListItemText primary="Open" />
                             </ListItem>
-                            <ListItem button className={classes.nested} onClick={() => history.push('/budgets/closed')}>
+                            <ListItem button className={classes.nested} onClick={() => history.push('/budgets/closed')} selected={location.pathname==='/budgets/closed'}>
                                 <ListItemText primary="Closed" />
                             </ListItem>
-                            <ListItem button className={classes.nested} onClick={() => history.push('/budgets/template')}>
+                            <ListItem button className={classes.nested} onClick={() => history.push('/budgets/template')} selected={location.pathname==='/budgets/template'}>
                                 <ListItemText primary="Template" />
                             </ListItem>
                         </List>
@@ -116,7 +117,7 @@ const Layout = observer(() => {
                             </ListItemIcon>
                             <ListItemText primary="Mortgate" />
                         </ListItem>
-                        <ListItem button onClick={() => history.push('/institutions')}>
+                        <ListItem button onClick={() => history.push('/institutions')} selected={location.pathname==='/institutions'}>
                             <ListItemIcon>
                                 <AccountBalanceIcon />
                             </ListItemIcon>
