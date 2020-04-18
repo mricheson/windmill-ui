@@ -7,7 +7,7 @@ import UserMenu from './UserMenu';
 const User = observer(() => {
     const { isLoggedIn, login, clear } = useContext(AuthenticatonStoreContext);
 
-    return isLoggedIn > 0
+    return isLoggedIn
         ? <UserMenu />
         : <GoogleLogin
             clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
