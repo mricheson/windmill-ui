@@ -6,10 +6,12 @@ function GoogleSecurity({ children }) {
         console.log(response);
     }
 
+    console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID)
+
     return (
         <>
             <GoogleLogin
-                clientId="205167229766-11dqad8kik9e8sukuuicg1q9klmkg6hl.apps.googleusercontent.com"
+                clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                 buttonText="Login"
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}
