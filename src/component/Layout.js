@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -13,6 +13,8 @@ import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import HomeIcon from '@material-ui/icons/Home';
 import BeachAccessIcon from '@material-ui/icons/BeachAccess';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import { AuthenticatonStoreContext } from '../store/AuthenticationStore';
+import { observer } from 'mobx-react-lite';
 
 const drawerWidth = 240;
 
@@ -41,9 +43,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Layout = () => {
+const Layout = observer(() => {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+    const { isLoggedIn } = useContext(AuthenticatonStoreContext);
+    const [open, setOpen] = React.useState(true);
 
     const toggleMenu = () => setOpen(!open);
 
@@ -51,82 +54,82 @@ const Layout = () => {
         <>
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar>
-                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={toggleMenu}>
+                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={toggleMenu} disabled={!isLoggedIn}>
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
                         Windmill
-                </Typography>
+                    </Typography>
                     <User />
                 </Toolbar>
             </AppBar>
-            <Drawer
-                className={classes.drawer}
-                variant="persistent"
-                anchor="left"
-                open={open}
-                classes={{
-                    paper: classes.drawerPaper,
-                }}
-            >
-                <Toolbar />
-                <div className={classes.drawerContainer}>
-                    <List>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <ReceiptIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Transactions" />
-                        </ListItem>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <TableChartIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Budget" />
-                        </ListItem>
-                        <List component="div" disablePadding>
-                            <ListItem button className={classes.nested}>
-                                <ListItemText primary="Open" />
+                <Drawer
+                    className={classes.drawer}
+                    variant="persistent"
+                    anchor="left"
+                    open={open && isLoggedIn}
+                    classes={{
+                        paper: classes.drawerPaper,
+                    }}
+                >
+                    <Toolbar />
+                    <div className={classes.drawerContainer}>
+                        <List>
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <ReceiptIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Transactions" />
                             </ListItem>
-                            <ListItem button className={classes.nested}>
-                                <ListItemText primary="Closed" />
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <TableChartIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Budget" />
                             </ListItem>
-                            <ListItem button className={classes.nested}>
-                                <ListItemText primary="Template" />
+                            <List component="div" disablePadding>
+                                <ListItem button className={classes.nested}>
+                                    <ListItemText primary="Open" />
+                                </ListItem>
+                                <ListItem button className={classes.nested}>
+                                    <ListItemText primary="Closed" />
+                                </ListItem>
+                                <ListItem button className={classes.nested}>
+                                    <ListItemText primary="Template" />
+                                </ListItem>
+                            </List>
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <HomeIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Mortgate" />
+                            </ListItem>
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <AccountBalanceIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Accounts" />
                             </ListItem>
                         </List>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <HomeIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Mortgate" />
-                        </ListItem>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <AccountBalanceIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Accounts" />
-                        </ListItem>
-                    </List>
-                    <Divider />
-                    <List>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <FavoriteIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="HSA Investments" />
-                        </ListItem>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <BeachAccessIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="401k Plan" />
-                        </ListItem>
-                    </List>
-                </div>
-            </Drawer>
+                        <Divider />
+                        <List>
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <FavoriteIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="HSA Investments" />
+                            </ListItem>
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <BeachAccessIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="401k Plan" />
+                            </ListItem>
+                        </List>
+                    </div>
+                </Drawer>
         </>
     );
-};
+});
 
 export default Layout;

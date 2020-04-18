@@ -9,7 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
 
 const UserMenu = observer(() => {
-    const authStore = useContext(AuthenticatonStoreContext);
+    const { profile, clear } = useContext(AuthenticatonStoreContext);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
@@ -21,8 +21,8 @@ const UserMenu = observer(() => {
         setAnchorEl(null);
     };
 
-    const avatar = authStore.profile && authStore.profile.imageUrl
-        ? <Avatar alt={authStore.profile.name} src={authStore.profile.imageUrl} />
+    const avatar = profile && profile.imageUrl
+        ? <Avatar alt={profile.name} src={profile.imageUrl} />
         : <AccountCircle />
 
     return (
@@ -50,7 +50,7 @@ const UserMenu = observer(() => {
             >
                 <GoogleLogout
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                    onLogoutSuccess={authStore.clear}
+                    onLogoutSuccess={clear}
                     render={renderProps => (<MenuItem onClick={renderProps.onClick} disabled={renderProps.disabled}>Signout</MenuItem>)}
                 >
                 </GoogleLogout>

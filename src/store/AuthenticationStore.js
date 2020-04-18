@@ -1,4 +1,4 @@
-import { decorate, observable, action } from 'mobx';
+import { decorate, observable, action, computed } from 'mobx';
 import { createContext } from 'react';
 
 class AuthenticatonStore {
@@ -19,13 +19,18 @@ class AuthenticatonStore {
     }
 
     clear = () => this.set();
+
+    get isLoggedIn() {
+        return this.token && this.token.length > 0;
+    }
 }
 
 decorate(AuthenticatonStore, {
     profile: observable,
     token: observable,
     login: action,
-    clear: action
+    clear: action,
+    isLoggedIn: computed
 });
 
 export const AuthenticatonStoreContext = createContext(new AuthenticatonStore());

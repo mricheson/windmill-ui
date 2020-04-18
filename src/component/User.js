@@ -5,15 +5,15 @@ import GoogleLogin from 'react-google-login';
 import UserMenu from './UserMenu';
 
 const User = observer(() => {
-    const authStore = useContext(AuthenticatonStoreContext);
+    const { isLoggedIn, login, clear } = useContext(AuthenticatonStoreContext);
 
-    return authStore.token.length > 0
+    return isLoggedIn > 0
         ? <UserMenu />
         : <GoogleLogin
             clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
             buttonText="Login"
-            onSuccess={authStore.login}
-            onFailure={authStore.clear}
+            onSuccess={login}
+            onFailure={clear}
             cookiePolicy={'single_host_origin'}
         />;
 });
