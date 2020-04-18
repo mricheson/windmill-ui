@@ -72,6 +72,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 ### Google login
 https://www.npmjs.com/package/react-google-login
 https://medium.com/@premdas.92/user-login-and-logout-with-google-auth-in-a-react-application-d1e834de4c39
+https://console.developers.google.com/apis/credentials?project=windmill-274104&supportedpurview=project
 
 ### Material UI
 https://material-ui.com/
