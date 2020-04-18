@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import GoogleLogin from 'react-google-login';
+import { observer } from 'mobx-react-lite';
+import { AuthenticatonStoreContext } from '../store/AuthenticationStore';
 
-function GoogleSecurity({ children }) {
-    const responseGoogle = (response) => {
-        console.log(response);
+const GoogleSecurity = observer(({ children }) => {
+    const authStore = useContext(AuthenticatonStoreContext);
+
+    const responseGoogle = (response = {}) => {
+        authStore.profile = response.profileObj;
+        authStore.token = response.tokenId;
     }
-
-    console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID)
 
     return (
         <>
@@ -20,6 +23,6 @@ function GoogleSecurity({ children }) {
             {children}
         </>
     );
-}
+});
 
 export default GoogleSecurity;
