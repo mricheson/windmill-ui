@@ -21,7 +21,7 @@ class AuthenticatonStore {
     clear = () => this.set();
 
     get isLoggedIn() {
-        return this.token && this.token.length > 0;
+        return Boolean(this.token && this.token.length > 0);
     }
 }
 
