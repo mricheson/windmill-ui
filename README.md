@@ -70,9 +70,11 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 ## Tools 
 
 ### Google login
-https://www.npmjs.com/package/react-google-login
-https://medium.com/@premdas.92/user-login-and-logout-with-google-auth-in-a-react-application-d1e834de4c39
+--https://www.npmjs.com/package/react-google-login
+--https://medium.com/@premdas.92/user-login-and-logout-with-google-auth-in-a-react-application-d1e834de4c39
 https://console.developers.google.com/apis/credentials?project=windmill-274104&supportedpurview=project
+https://www.callicoder.com/spring-boot-security-oauth2-social-login-part-3/
+https://github.com/callicoder/spring-boot-react-oauth2-social-login-demo
 
 ### Material UI
 https://material-ui.com/
