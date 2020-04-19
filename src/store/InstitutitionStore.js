@@ -7,7 +7,7 @@ class InstitutionStore {
 
     load = () => getInstitutions()
         .then(response => {
-            console.log(response);
+            this.institutions = response.data;
         });
 }
 

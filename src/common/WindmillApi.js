@@ -15,3 +15,4 @@ const executeApi = (verb, url, body) => axios({
 const get = url => executeApi('get', url, null);
 
 export function getInstitutions() { return get('/api/institutions/'); }
+export function getAccounts() { return get('/api/accounts/'); }

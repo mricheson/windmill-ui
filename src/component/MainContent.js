@@ -12,9 +12,14 @@ import OAuth2RedirectHandler from './Security/OAuth2RedirectHandler';
 
 const useStyles = makeStyles(theme => ({
     offset: theme.mixins.toolbar,
+    content: {
+        display: 'flex',
+        justifyContent: 'center',
+        margin: theme.spacing(2)
+    }
 }))
 
-const MainContent = observer(({authenticated}) => {
+const MainContent = observer(({ authenticated }) => {
     const classes = useStyles();
     const location = useLocation();
     const history = useHistory();
@@ -24,32 +29,34 @@ const MainContent = observer(({authenticated}) => {
     }
 
     return (
-        <>
+        <div >
             <div className={classes.offset} />
-            <Switch>
-                <PrivateRoute exact path="/transactions" authenticated={authenticated}>
-                    <Transactions />
-                </PrivateRoute>
-                <PrivateRoute exact path="/budgets/open" authenticated={authenticated}>
-                    <BudgetList />
-                </PrivateRoute>
-                <PrivateRoute exact path="/budgets/closed" authenticated={authenticated}>
-                    <BudgetList />
-                </PrivateRoute>
-                <PrivateRoute exact path="/budgets/template" authenticated={authenticated}>
-                    <BudgetTemplate />
-                </PrivateRoute>
-                <PrivateRoute exact path="/institutions" authenticated={authenticated}>
-                    <Institutions />
-                </PrivateRoute>
-                <Route exact path="/">
-                    {authenticated ? <div>Welcome</div> : <Login authenticated={authenticated} />}
-                </Route>
-                <Route exact path="/oauth2/redirect">
-                    <OAuth2RedirectHandler />
-                </Route>
-            </Switch>
-        </>
+            <div className={classes.content}>
+                <Switch>
+                    <PrivateRoute exact path="/transactions" authenticated={authenticated}>
+                        <Transactions />
+                    </PrivateRoute>
+                    <PrivateRoute exact path="/budgets/open" authenticated={authenticated}>
+                        <BudgetList />
+                    </PrivateRoute>
+                    <PrivateRoute exact path="/budgets/closed" authenticated={authenticated}>
+                        <BudgetList />
+                    </PrivateRoute>
+                    <PrivateRoute exact path="/budgets/template" authenticated={authenticated}>
+                        <BudgetTemplate />
+                    </PrivateRoute>
+                    <PrivateRoute exact path="/institutions" authenticated={authenticated}>
+                        <Institutions />
+                    </PrivateRoute>
+                    <Route exact path="/">
+                        {authenticated ? <div>Welcome</div> : <Login authenticated={authenticated} />}
+                    </Route>
+                    <Route exact path="/oauth2/redirect">
+                        <OAuth2RedirectHandler />
+                    </Route>
+                </Switch>
+            </div>
+        </div>
     );
 });
 
