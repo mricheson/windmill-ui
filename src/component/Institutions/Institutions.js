@@ -15,7 +15,8 @@ const useStyles = makeStyles(theme => ({
         width: 300,
         margin: theme.spacing(2),
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        flexWrap: 'wrap'
     },
     icon: {
         height: '100%'
