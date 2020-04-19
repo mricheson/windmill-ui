@@ -10,13 +10,17 @@ import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles(theme => ({
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center'
+    },
     card: {
         minHeight: 400,
         width: 300,
         margin: theme.spacing(2),
         display: 'flex',
-        flexDirection: 'column',
-        flexWrap: 'wrap'
+        flexDirection: 'column'
     },
     icon: {
         height: '100%'
@@ -45,7 +49,9 @@ const Institutions = observer(() => {
         ]);
     }, [institutionStore, accountStore]);
 
-    const getAccounts = institutionId => accountStore.accounts.filter(account => account.institution.id === institutionId);
+    const getAccounts = institutionId => accountStore.accounts
+        .filter(account => account.institution.id === institutionId)
+        .sort((a, b) => a.account.toLowerCase().localeCompare(b.account.toLowerCase()));
 
     const renderAccount = account => (
         <ListItem button key={account.id}>
@@ -74,24 +80,30 @@ const Institutions = observer(() => {
         }
     }
 
-    return institutionStore.institutions.map(institution => {
-        console.log(JSON.stringify(institution));
-        return (
-            <Card key={institution.id} className={classes.card}>
-                <CardHeader title={institution.name} />
-                <CardContent className={classes.content}>
-                    <List>
-                        {getAccounts(institution.id).map(renderAccount)}
-                    </List>
-                </CardContent>
-                <CardActions className={classes.cardAction}>
-                    <IconButton>
-                        <AddIcon />
-                    </IconButton>
-                </CardActions>
-            </Card>
-        )
-    });
+    return (
+        <div className={classes.root}>
+            {institutionStore.institutions
+            .sort((a,b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+            .map(institution => {
+                console.log(JSON.stringify(institution));
+                return (
+                    <Card key={institution.id} className={classes.card}>
+                        <CardHeader title={institution.name} />
+                        <CardContent className={classes.content}>
+                            <List>
+                                {getAccounts(institution.id).map(renderAccount)}
+                            </List>
+                        </CardContent>
+                        <CardActions className={classes.cardAction}>
+                            <IconButton>
+                                <AddIcon />
+                            </IconButton>
+                        </CardActions>
+                    </Card>
+                )
+            })}
+        </div>
+    );
 });
 
 export default Institutions;
