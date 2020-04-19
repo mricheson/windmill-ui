@@ -16,6 +16,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import { observer } from 'mobx-react-lite';
 import MainContent from './MainContent';
 import { useHistory, useLocation } from 'react-router-dom';
+import BuildIcon from '@material-ui/icons/Build';
 
 const drawerWidth = 240;
 
@@ -109,7 +110,7 @@ const Layout = observer(({ authenticated }) => {
                                 <ListItemText primary="Template" />
                             </ListItem>
                         </List>
-                        <ListItem button>
+                        <ListItem button disabled>
                             <ListItemIcon>
                                 <HomeIcon />
                             </ListItemIcon>
@@ -124,17 +125,26 @@ const Layout = observer(({ authenticated }) => {
                     </List>
                     <Divider />
                     <List>
-                        <ListItem button>
+                        <ListItem button disabled>
                             <ListItemIcon>
                                 <FavoriteIcon />
                             </ListItemIcon>
                             <ListItemText primary="HSA Investments" />
                         </ListItem>
-                        <ListItem button>
+                        <ListItem button disabled>
                             <ListItemIcon>
                                 <BeachAccessIcon />
                             </ListItemIcon>
                             <ListItemText primary="401k Plan" />
+                        </ListItem>
+                    </List>
+                    <Divider />
+                    <List>
+                        <ListItem button disabled>
+                            <ListItemIcon>
+                                <BuildIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Maintenance" />
                         </ListItem>
                     </List>
                 </div>
