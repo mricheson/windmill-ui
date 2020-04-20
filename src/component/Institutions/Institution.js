@@ -40,7 +40,7 @@ const InstitutionCard = observer(({ institution }) => {
                 }
                 action={
                     <IconButton>
-                        <EditIcon />
+                        <EditIcon color="disabled"/>
                     </IconButton>
                 } />
             <CardContent className={classes.content}>
