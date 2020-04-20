@@ -1,4 +1,5 @@
 import axios from "axios";
+import {rootStore} from '../store/RootStore';
 
 const baseUrl = process.env.REACT_APP_WINDMILL_API_BASE_URL;
 
@@ -7,7 +8,7 @@ const executeApi = (verb, url, body) => axios({
     url: `${baseUrl}${url}`,
     data: body,
     headers: {
-        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        'Authorization': `Bearer ${rootStore.token}`
     }
 });
 
