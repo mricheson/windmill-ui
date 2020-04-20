@@ -1,9 +1,10 @@
 import React from 'react';
-import { Card, CardHeader, CardContent, CardActions, IconButton } from '@material-ui/core';
+import { Card, CardHeader, CardContent, CardActions, IconButton, Avatar } from '@material-ui/core';
 import { observer } from 'mobx-react-lite';
 import { makeStyles } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Accounts from './Accounts/Accounts';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -30,7 +31,18 @@ const InstitutionCard = observer(({ institution }) => {
 
     return (
         <Card key={institution.id} className={classes.card}>
-            <CardHeader title={institution.name} />
+            <CardHeader
+                title={institution.name}
+                avatar={
+                    <Avatar className={classes.avatar}>
+                        {institution.name && institution.name.length > 0 && institution.name.charAt(0).toUpperCase()}
+                    </Avatar>
+                }
+                action={
+                    <IconButton>
+                        <EditIcon />
+                    </IconButton>
+                } />
             <CardContent className={classes.content}>
                 <Accounts institutionId={institution.id} />
             </CardContent>
