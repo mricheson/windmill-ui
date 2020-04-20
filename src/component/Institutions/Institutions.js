@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { InstitutionStoreContext } from '../../store/InstitutitionStore';
-import { Card, CardHeader, CardContent, List, ListItem, ListItemText, ListItemIcon, Icon, CardActions, IconButton } from '@material-ui/core';
+import { Card, CardHeader, CardContent, List, ListItem, ListItemText, ListItemIcon, Icon, CardActions, IconButton, CircularProgress } from '@material-ui/core';
 import { observer } from 'mobx-react-lite';
 import { makeStyles } from '@material-ui/core';
 import { AccountStoreContext } from '../../store/AccountStore';
@@ -8,6 +8,7 @@ import CreditCardIcon from '@material-ui/icons/CreditCard';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import AddIcon from '@material-ui/icons/Add';
+import { RootStoreContext } from '../../store/RootStore';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -34,12 +35,19 @@ const useStyles = makeStyles(theme => ({
     content: {
         height: 272,
         overflowY: 'auto'
+    },
+    accountSpinner: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%'
     }
 }))
 
 const Institutions = observer(() => {
     const institutionStore = useContext(InstitutionStoreContext);
     const accountStore = useContext(AccountStoreContext);
+    const rootStore = useContext(RootStoreContext);
     const classes = useStyles();
 
     useEffect(() => {
@@ -80,28 +88,38 @@ const Institutions = observer(() => {
         }
     }
 
+    if (rootStore.loading.has('institutions')) {
+        return <CircularProgress />;
+    }
+
     return (
         <div className={classes.root}>
             {institutionStore.institutions
-            .sort((a,b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
-            .map(institution => {
-                console.log(JSON.stringify(institution));
-                return (
-                    <Card key={institution.id} className={classes.card}>
-                        <CardHeader title={institution.name} />
-                        <CardContent className={classes.content}>
-                            <List>
-                                {getAccounts(institution.id).map(renderAccount)}
-                            </List>
-                        </CardContent>
-                        <CardActions className={classes.cardAction}>
-                            <IconButton>
-                                <AddIcon />
-                            </IconButton>
-                        </CardActions>
-                    </Card>
-                )
-            })}
+                .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+                .map(institution => {
+                    console.log(JSON.stringify(institution));
+                    return (
+                        <Card key={institution.id} className={classes.card}>
+                            <CardHeader title={institution.name} />
+                            <CardContent className={classes.content}>
+                                {
+                                    rootStore.loading.has('accounts')
+                                        ? <div className={classes.accountSpinner}>
+                                            <CircularProgress />
+                                        </div>
+                                        : <List>
+                                            {getAccounts(institution.id).map(renderAccount)}
+                                        </List>
+                                }
+                            </CardContent>
+                            <CardActions className={classes.cardAction}>
+                                <IconButton>
+                                    <AddIcon />
+                                </IconButton>
+                            </CardActions>
+                        </Card>
+                    )
+                })}
         </div>
     );
 });

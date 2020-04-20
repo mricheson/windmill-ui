@@ -16,8 +16,6 @@ class RootStore {
         return Boolean(this.token && this.token.length > 0);
     }
 
-    isLoading = element => this.loading.has(element);
-
     startLoading = element => this.loading.add(element);
 
     stopLoading = element => this.loading.delete(element);
@@ -33,10 +31,11 @@ decorate(RootStore, {
     token: observable,
     loading: observable,
     setToken: action,
-    isLoading: action,
     startLoading: action,
     stopLoading: action,
     isLoggedIn: computed
 });
 
-export const RootStoreContext = createContext(new RootStore());
+export const rootStore = new RootStore();
+
+export const RootStoreContext = createContext(rootStore);
