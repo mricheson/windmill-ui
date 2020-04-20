@@ -1,5 +1,6 @@
 import { decorate, observable, action, computed } from 'mobx';
 import { createContext } from 'react';
+import jwtDecode from 'jwt-decode';
 
 const ACCESS_TOKEN = 'accessToken';
 
@@ -14,6 +15,12 @@ class RootStore {
 
     get isLoggedIn() {
         return Boolean(this.token && this.token.length > 0);
+    }
+
+    get decodedToken() {
+        const jwt = jwtDecode(this.token);
+        console.log(jwt);
+        return jwt;
     }
 
     startLoading = element => this.loading.add(element);
@@ -33,7 +40,8 @@ decorate(RootStore, {
     setToken: action,
     startLoading: action,
     stopLoading: action,
-    isLoggedIn: computed
+    isLoggedIn: computed,
+    decodedToken: computed
 });
 
 export const rootStore = new RootStore();
