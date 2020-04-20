@@ -14,7 +14,9 @@ const User = observer(() => {
     const classes = useStyles();
     const rootStore = useContext(RootStoreContext);
 
-    const jwt = rootStore.decodedToken;
+    if (rootStore.isLoggedIn) {
+        const jwt = rootStore.decodedToken;
+    }
 
     return rootStore.isLoggedIn
         ? <Button className={classes.button} onClick={() => rootStore.setToken('')}>Sign Out</Button>
