@@ -7,7 +7,7 @@ class RootStore {
     token = '';
     loading = new Set();
 
-    RootStore() {
+    constructor() {
         this.token = localStorage.getItem(ACCESS_TOKEN) || '';
         this.loading = new Set();
     }
