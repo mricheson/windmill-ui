@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { setToken } from '../../store/Token';
+import { RootStoreContext } from '../../store/RootStore';
+import { observer } from 'mobx-react-lite';
 
 
-const OAuth2RedirectHandler = () => {
+const OAuth2RedirectHandler = observer(() => {
     const history = useHistory();
     const location = useLocation();
+    const { setToken } = useContext(RootStoreContext);
 
     const getUrlParameter = (name) => {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -27,6 +29,6 @@ const OAuth2RedirectHandler = () => {
     history.push('/');
 
     return <></>;
-};
+});
 
 export default OAuth2RedirectHandler;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles } from '@material-ui/core/styles';
 import User from './User';
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, Divider } from '@material-ui/core';
+import { List, ListItem, ListItemIcon, ListItemText, Divider, SwipeableDrawer } from '@material-ui/core';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import TableChartIcon from '@material-ui/icons/TableChart';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
@@ -17,6 +17,8 @@ import { observer } from 'mobx-react-lite';
 import MainContent from './MainContent';
 import { useHistory, useLocation } from 'react-router-dom';
 import BuildIcon from '@material-ui/icons/Build';
+import { RootStoreContext } from '../store/RootStore';
+import clsx from 'clsx';
 
 const drawerWidth = 240;
 
@@ -48,14 +50,18 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: theme.spacing(12),
     },
     drawerSpacer: {
-        paddingLeft: drawerWidth
+        paddingLeft: drawerWidth,
+    },
+    drawerSpacerTransition: {
+        transition: [['padding', `${theme.transitions.duration.standard}ms`]]
     }
 }));
 
-const Layout = observer(({ authenticated }) => {
+const Layout = observer(() => {
     const classes = useStyles();
-    let history = useHistory();
-    let location = useLocation();
+    const history = useHistory();
+    const location = useLocation();
+    const rootStore = useContext(RootStoreContext);
     const [open, setOpen] = useState(true);
 
     const toggleMenu = () => setOpen(!open);
@@ -64,7 +70,7 @@ const Layout = observer(({ authenticated }) => {
         <>
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar>
-                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={toggleMenu} disabled={!authenticated}>
+                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={toggleMenu} disabled={!rootStore.isLoggedIn}>
                         <MenuIcon />
                     </IconButton>
                     <div className={classes.title}>
@@ -72,14 +78,14 @@ const Layout = observer(({ authenticated }) => {
                             Windmill
                         </Typography>
                     </div>
-                    <User authenticated={authenticated} />
+                    <User />
                 </Toolbar>
             </AppBar>
-            <Drawer
+            <SwipeableDrawer
                 className={classes.drawer}
                 variant="persistent"
                 anchor="left"
-                open={Boolean(open && authenticated)}
+                open={Boolean(open && rootStore.isLoggedIn)}
                 classes={{
                     paper: classes.drawerPaper,
                 }}
@@ -148,9 +154,9 @@ const Layout = observer(({ authenticated }) => {
                         </ListItem>
                     </List>
                 </div>
-            </Drawer>
-            <div className={open & authenticated ? classes.drawerSpacer : null}>
-                <MainContent authenticated={authenticated} />
+            </SwipeableDrawer>
+            <div className={clsx(classes.drawerSpacerTransition, (open & rootStore.isLoggedIn ? classes.drawerSpacer : null))}>
+                <MainContent />
             </div>
 
         </>

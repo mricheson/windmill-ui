@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import { makeStyles } from '@material-ui/core';
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
@@ -9,6 +9,7 @@ import Institutions from './Institutions/Institutions';
 import Login from './Security/Login';
 import PrivateRoute from './Security/PrivateRoute';
 import OAuth2RedirectHandler from './Security/OAuth2RedirectHandler';
+import { RootStoreContext } from '../store/RootStore';
 
 const useStyles = makeStyles(theme => ({
     offset: theme.mixins.toolbar,
@@ -19,12 +20,13 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const MainContent = observer(({ authenticated }) => {
+const MainContent = observer(() => {
     const classes = useStyles();
     const location = useLocation();
     const history = useHistory();
+    const rootStore = useContext(RootStoreContext);
 
-    if (!authenticated && location.pathname !== '/') {
+    if (!rootStore.isLoggedIn && location.pathname !== '/') {
         history.push('/');
     }
 
@@ -33,23 +35,23 @@ const MainContent = observer(({ authenticated }) => {
             <div className={classes.offset} />
             <div className={classes.content}>
                 <Switch>
-                    <PrivateRoute exact path="/transactions" authenticated={authenticated}>
+                    <PrivateRoute exact path="/transactions">
                         <Transactions />
                     </PrivateRoute>
-                    <PrivateRoute exact path="/budgets/open" authenticated={authenticated}>
+                    <PrivateRoute exact path="/budgets/open">
                         <BudgetList />
                     </PrivateRoute>
-                    <PrivateRoute exact path="/budgets/closed" authenticated={authenticated}>
+                    <PrivateRoute exact path="/budgets/closed">
                         <BudgetList />
                     </PrivateRoute>
-                    <PrivateRoute exact path="/budgets/template" authenticated={authenticated}>
+                    <PrivateRoute exact path="/budgets/template">
                         <BudgetTemplate />
                     </PrivateRoute>
-                    <PrivateRoute exact path="/institutions" authenticated={authenticated}>
+                    <PrivateRoute exact path="/institutions">
                         <Institutions />
                     </PrivateRoute>
                     <Route exact path="/">
-                        {authenticated ? <div>Welcome</div> : <Login authenticated={authenticated} />}
+                        {rootStore.isLoggedIn ? <div>Welcome</div> : <Login />}
                     </Route>
                     <Route exact path="/oauth2/redirect">
                         <OAuth2RedirectHandler />
