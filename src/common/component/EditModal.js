@@ -1,9 +1,13 @@
 import React from 'react';
-import { Slide, Dialog, DialogTitle, DialogContent, DialogActions, Button, CircularProgress, useTheme, makeStyles } from '@material-ui/core';
+import { Slide, Dialog, DialogTitle, DialogContent, DialogActions, Button, CircularProgress, useTheme, makeStyles, FormGroup } from '@material-ui/core';
+import clsx from 'clsx';
 
 const useStyle = makeStyles(theme => ({
     root: {
         width: theme.breakpoints.values.sm
+    },
+    formControl: {
+        margin: [[theme.spacing(1), 0, theme.spacing(1), 0]],
     }
 }));
 
@@ -14,6 +18,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const EditModal = ({ onSave, onClose, isSaving, title, children }) => {
     const theme = useTheme();
     const classes = useStyle();
+
+    const styleChild = (child, index = 0) => React.cloneElement(child, { className: clsx(classes.formControl, child.props.className), key: index });
+
+    const styledChildren = Array.isArray(children)
+        ? children.map(styleChild)
+        : styleChild(children);
 
     return (
         <Dialog
@@ -27,7 +37,9 @@ const EditModal = ({ onSave, onClose, isSaving, title, children }) => {
         >
             <DialogTitle>{title}</DialogTitle>
             <DialogContent>
-                {children}
+                <FormGroup className={classes.formGroup}>
+                    {styledChildren}
+                </FormGroup>
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose} color="primary" disabled={isSaving}>

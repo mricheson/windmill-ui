@@ -10,7 +10,7 @@ class Account {
     isActive = false;
     institution = {}
 
-    constructor(newAccount = {}){
+    constructor(newAccount = {}) {
         this.populate(newAccount);
     }
 
@@ -22,9 +22,33 @@ class Account {
         this.institution = new Institution(account.institution);
     }
 
+    savableObject = root => {
+        const result = {};
+
+        if (root.id !== undefined) {
+            result.id = root.id;
+        }
+        if (root.name !== undefined) {
+            result.account = root.name;
+        }
+        if (root.type !== undefined) {
+            result.accountType = root.type;
+        }
+        if (root.institution !== undefined) {
+            result.institution = root.institution;
+        }
+        if (root.isActive !== undefined) {
+            result.activeIndicator = root.isActive;
+        }
+
+        return result;
+    };
+
     save = changes => {
+        const accountToSave = { ...this.savableObject(this), ...this.savableObject(changes) };
+
         rootStore.startLoading('account');
-        return saveAccount({...this, ...changes})
+        return saveAccount(accountToSave)
             .then(response => {
                 this.populate(response.data);
             })
