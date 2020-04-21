@@ -89,6 +89,8 @@ const Layout = observer(() => {
                 classes={{
                     paper: classes.drawerPaper,
                 }}
+                onOpen={() => setOpen(true)}
+                onClose={() => setOpen(false)}
             >
                 <Toolbar />
                 <div className={classes.drawerContainer}>

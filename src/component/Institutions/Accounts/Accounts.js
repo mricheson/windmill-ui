@@ -20,7 +20,7 @@ const InstitutionCard = observer(({ institutionId }) => {
     const rootStore = useContext(RootStoreContext);
     const classes = useStyles();
 
-    const getAccounts = () => accountStore.accounts
+    const getAccounts = () => accountStore.accounts.slice()
         .filter(account => account.institution.id === institutionId)
         .sort((a, b) => a.account.toLowerCase().localeCompare(b.account.toLowerCase()));
 

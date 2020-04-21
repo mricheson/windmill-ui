@@ -35,7 +35,7 @@ const Institutions = observer(() => {
     return (
         <div className={classes.root}>
             {
-                institutionStore.institutions
+                institutionStore.institutions.slice()
                     .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
                     .map(institution => <Institution key={institution.id} institution={institution} />)
             }
