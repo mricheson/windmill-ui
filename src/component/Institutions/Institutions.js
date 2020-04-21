@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core';
 import { AccountStoreContext } from '../../store/AccountStore';
 import { RootStoreContext } from '../../store/RootStore';
 import Institution from './Institution';
+import AddFooter from '../../common/component/AddFooter';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -13,7 +14,7 @@ const useStyles = makeStyles(theme => ({
         flexWrap: 'wrap',
         justifyContent: 'center'
     }
-}))
+}));
 
 const Institutions = observer(() => {
     const institutionStore = useContext(InstitutionStoreContext);
@@ -39,6 +40,7 @@ const Institutions = observer(() => {
                     .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
                     .map(institution => <Institution key={institution.id} institution={institution} />)
             }
+            <AddFooter />
         </div>
     );
 });

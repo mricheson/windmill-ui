@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -17,10 +17,8 @@ import { observer } from 'mobx-react-lite';
 import MainContent from './MainContent';
 import { useHistory, useLocation } from 'react-router-dom';
 import BuildIcon from '@material-ui/icons/Build';
-import { RootStoreContext } from '../store/RootStore';
+import { DRAWER_WIDTH, RootStoreContext } from '../store/RootStore';
 import clsx from 'clsx';
-
-const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -37,11 +35,11 @@ const useStyles = makeStyles((theme) => ({
         width: 'min-content'
     },
     drawer: {
-        width: drawerWidth,
+        width: DRAWER_WIDTH,
         flexShrink: 0,
     },
     drawerPaper: {
-        width: drawerWidth,
+        width: DRAWER_WIDTH,
     },
     drawerContainer: {
         overflow: 'auto',
@@ -50,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: theme.spacing(12),
     },
     drawerSpacer: {
-        paddingLeft: drawerWidth,
+        paddingLeft: DRAWER_WIDTH,
     },
     drawerSpacerTransition: {
         transition: [['padding', `${theme.transitions.duration.standard}ms`]]
@@ -62,9 +60,9 @@ const Layout = observer(() => {
     const history = useHistory();
     const location = useLocation();
     const rootStore = useContext(RootStoreContext);
-    const [open, setOpen] = useState(true);
+    const setOpen = open => rootStore.drawerOpen = open;
 
-    const toggleMenu = () => setOpen(!open);
+    const toggleMenu = () => setOpen(!rootStore.drawerOpen);
 
     return (
         <>
@@ -85,7 +83,7 @@ const Layout = observer(() => {
                 className={classes.drawer}
                 variant="persistent"
                 anchor="left"
-                open={Boolean(open && rootStore.isLoggedIn)}
+                open={Boolean(rootStore.drawerOpen && rootStore.isLoggedIn)}
                 classes={{
                     paper: classes.drawerPaper,
                 }}
@@ -157,7 +155,7 @@ const Layout = observer(() => {
                     </List>
                 </div>
             </SwipeableDrawer>
-            <div className={clsx(classes.drawerSpacerTransition, (open & rootStore.isLoggedIn ? classes.drawerSpacer : null))}>
+            <div className={clsx(classes.drawerSpacerTransition, (rootStore.drawerOpen & rootStore.isLoggedIn ? classes.drawerSpacer : null))}>
                 <MainContent />
             </div>
 

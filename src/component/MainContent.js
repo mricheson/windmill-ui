@@ -58,6 +58,7 @@ const MainContent = observer(() => {
                     </Route>
                 </Switch>
             </div>
+            <div className={classes.offset} />
         </div>
     );
 });

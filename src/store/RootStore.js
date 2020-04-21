@@ -3,10 +3,12 @@ import { createContext } from 'react';
 import jwtDecode from 'jwt-decode';
 
 const ACCESS_TOKEN = 'accessToken';
+export const DRAWER_WIDTH = 240;
 
 class RootStore {
     token = '';
     loading = new Set();
+    drawerOpen = true;
 
     constructor() {
         this.token = localStorage.getItem(ACCESS_TOKEN) || '';
@@ -37,6 +39,7 @@ class RootStore {
 decorate(RootStore, {
     token: observable,
     loading: observable,
+    drawerOpen: observable,
     setToken: action,
     startLoading: action,
     stopLoading: action,
