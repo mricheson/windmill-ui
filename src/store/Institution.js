@@ -19,7 +19,7 @@ class Institution {
         }
         this.name = institution.name || '';
 
-        axios.get(`http://favicongrabber.com/api/grab/${this.name}.com`)
+        axios.get(`https://favicongrabber.com/api/grab/${this.name}.com`)
             .then(response => {
                 if (response.status === 200 && response.data && response.data.icons && response.data.icons.length > 0) {
                     this.logo = response.data.icons[0].src;
