@@ -18,7 +18,6 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column'
     },
-
     cardAction: {
         justifyContent: 'center'
     },
@@ -56,7 +55,7 @@ const InstitutionCard = observer(({ institution }) => {
                 <CardHeader
                     title={institution.name}
                     avatar={
-                        <Avatar className={classes.avatar}>
+                        <Avatar variant="square" src={institution.logo}>
                             {institution.name && institution.name.length > 0 && institution.name.charAt(0).toUpperCase()}
                         </Avatar>
                     }
