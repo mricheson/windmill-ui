@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Card, CardHeader, CardContent, CardActions, IconButton, Avatar } from '@material-ui/core';
 import { observer } from 'mobx-react-lite';
 import { makeStyles } from '@material-ui/core';
@@ -6,6 +6,9 @@ import AddIcon from '@material-ui/icons/Add';
 import Accounts from './Accounts/Accounts';
 import EditIcon from '@material-ui/icons/Edit';
 import InstitutionModal from './InstitutionModal';
+import AccountObject from '../../store/Account';
+import AccountModal from './Accounts/AccountModal';
+import { AccountStoreContext } from '../../store/AccountStore';
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -27,9 +30,25 @@ const useStyles = makeStyles(theme => ({
 
 const InstitutionCard = observer(({ institution }) => {
     const classes = useStyles();
-    const [modal, setModal] = useState(null);
+    const accountStore = useContext(AccountStoreContext);
+    const [instutionModal, setInstitutionModal] = useState(null);
+    const [accountModal, setAccountModal] = useState(null);
 
-    const openModal = () => setModal(<InstitutionModal institution={institution} onClose={() => setModal(null)} />);
+    const openInstitutionModal = () => setInstitutionModal(
+        <InstitutionModal
+            institution={institution}
+            onClose={() => setInstitutionModal(null)}
+        />
+    );
+
+    const openAccountModal = () => setAccountModal(
+        <AccountModal
+            account={new AccountObject({ institution })}
+            onClose={() => setAccountModal(null)}
+            onSave={account => accountStore.accounts.push(account)}
+            mode="add"
+        />
+    );
 
     return (
         <>
@@ -42,7 +61,7 @@ const InstitutionCard = observer(({ institution }) => {
                         </Avatar>
                     }
                     action={
-                        <IconButton onClick={openModal}>
+                        <IconButton onClick={openInstitutionModal}>
                             <EditIcon color="disabled" />
                         </IconButton>
                     } />
@@ -50,12 +69,13 @@ const InstitutionCard = observer(({ institution }) => {
                     <Accounts institutionId={institution.id} />
                 </CardContent>
                 <CardActions className={classes.cardAction}>
-                    <IconButton>
+                    <IconButton onClick={openAccountModal}>
                         <AddIcon />
                     </IconButton>
                 </CardActions>
             </Card>
-            {modal}
+            {instutionModal}
+            {accountModal}
         </>
     );
 });
