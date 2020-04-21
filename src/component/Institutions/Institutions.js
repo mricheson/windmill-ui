@@ -37,6 +37,7 @@ const Institutions = observer(() => {
             institution={new InstitutionObject()}
             onClose={() => setModal(null)}
             onSave={institution => institutionStore.institutions.push(institution)}
+            mode="add"
         />
     );
 
