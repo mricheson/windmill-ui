@@ -30,3 +30,9 @@ export function getAccounts() {
     return get('/api/accounts/');
 }
 
+export function saveAccount(account) {
+    return account.id
+        ? put(`/api/accounts/${account.id}`, account)
+        : post('/api/accounts/', account);;
+}
+

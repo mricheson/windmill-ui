@@ -22,7 +22,7 @@ const InstitutionCard = observer(({ institutionId }) => {
 
     const getAccounts = () => accountStore.accounts.slice()
         .filter(account => account.institution.id === institutionId)
-        .sort((a, b) => a.account.toLowerCase().localeCompare(b.account.toLowerCase()));
+        .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
     if (rootStore.loading.has('accounts')) {
         return (

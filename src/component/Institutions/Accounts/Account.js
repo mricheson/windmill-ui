@@ -6,9 +6,9 @@ import AccountIcon from './AccountIcon';
 const Account = observer(({ account }) => (
     <ListItem button key={account.id}>
         <ListItemIcon>
-            <AccountIcon accountType={account.accountType.type} />
+            <AccountIcon accountType={account.type.type} />
         </ListItemIcon>
-        <ListItemText primary={account.account} />
+        <ListItemText primary={account.name} />
     </ListItem>
 ));
 
