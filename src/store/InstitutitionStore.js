@@ -2,6 +2,7 @@ import { decorate, observable, action } from 'mobx';
 import { createContext } from 'react';
 import { getInstitutions } from '../common/WindmillApi';
 import { rootStore } from './RootStore';
+import Institution from './Institution';
 
 class InstitutionStore {
     institutions = [];
@@ -10,7 +11,7 @@ class InstitutionStore {
         rootStore.startLoading('institutions');
         return getInstitutions()
             .then(response => {
-                this.institutions = response.data;
+                this.institutions = response.data.map(institution => new Institution(institution));
             })
             .catch(e => {
                 console.log(e);

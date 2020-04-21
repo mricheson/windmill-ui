@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardHeader, CardContent, CardActions, IconButton, Avatar } from '@material-ui/core';
 import { observer } from 'mobx-react-lite';
 import { makeStyles } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Accounts from './Accounts/Accounts';
 import EditIcon from '@material-ui/icons/Edit';
+import InstitutionModal from './InstitutionModal';
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -26,32 +27,36 @@ const useStyles = makeStyles(theme => ({
 
 const InstitutionCard = observer(({ institution }) => {
     const classes = useStyles();
+    const [modal, setModal] = useState(null);
 
-    console.log(JSON.stringify(institution));
+    const openModal = () => setModal(<InstitutionModal institution={institution} onClose={() => setModal(null)} />);
 
     return (
-        <Card key={institution.id} className={classes.card}>
-            <CardHeader
-                title={institution.name}
-                avatar={
-                    <Avatar className={classes.avatar}>
-                        {institution.name && institution.name.length > 0 && institution.name.charAt(0).toUpperCase()}
-                    </Avatar>
-                }
-                action={
+        <>
+            <Card key={institution.id} className={classes.card}>
+                <CardHeader
+                    title={institution.name}
+                    avatar={
+                        <Avatar className={classes.avatar}>
+                            {institution.name && institution.name.length > 0 && institution.name.charAt(0).toUpperCase()}
+                        </Avatar>
+                    }
+                    action={
+                        <IconButton onClick={openModal}>
+                            <EditIcon color="disabled" />
+                        </IconButton>
+                    } />
+                <CardContent className={classes.content}>
+                    <Accounts institutionId={institution.id} />
+                </CardContent>
+                <CardActions className={classes.cardAction}>
                     <IconButton>
-                        <EditIcon color="disabled"/>
+                        <AddIcon />
                     </IconButton>
-                } />
-            <CardContent className={classes.content}>
-                <Accounts institutionId={institution.id} />
-            </CardContent>
-            <CardActions className={classes.cardAction}>
-                <IconButton>
-                    <AddIcon />
-                </IconButton>
-            </CardActions>
-        </Card>
+                </CardActions>
+            </Card>
+            {modal}
+        </>
     );
 });
 
