@@ -15,7 +15,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const EditModal = ({ onSave, onClose, isSaving, title, mode = "edit", children }) => {
+const EditModal = ({ onSave, canSave = true, onClose, isSaving, title, mode = "edit", children }) => {
     const theme = useTheme();
     const classes = useStyle();
 
@@ -45,7 +45,7 @@ const EditModal = ({ onSave, onClose, isSaving, title, mode = "edit", children }
                 <Button onClick={onClose} color="primary" disabled={isSaving}>
                     Cancel
                 </Button>
-                <Button onClick={onSave} color="primary" disabled={isSaving}>
+                <Button onClick={onSave} color="primary" disabled={isSaving || !canSave}>
                     {isSaving ? <CircularProgress size={theme.typography.fontSize} /> : 'Save'}
                 </Button>
             </DialogActions>

@@ -31,9 +31,17 @@ const AccountModal = observer(({ account, onClose, onSave = () => { }, mode }) =
     }
 
     const isSaving = rootStore.loading.has('account');
+    const canSave = Boolean(editedType && editedType !== '');
 
     return (
-        <EditModal onSave={save} onClose={onClose} isSaving={isSaving} title="Account" mode={mode}>
+        <EditModal
+            onSave={save}
+            canSave={canSave}
+            onClose={onClose}
+            isSaving={isSaving}
+            title="Account"
+            mode={mode}
+        >
             <TextField
                 autoFocus
                 label="Name"
