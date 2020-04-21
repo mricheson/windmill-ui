@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const AddFooter = observer(() => {
+const AddFooter = observer(({ onAdd }) => {
     const rootStore = useContext(RootStoreContext);
     const classes = useStyles();
 
@@ -38,7 +38,7 @@ const AddFooter = observer(() => {
         <AppBar position="fixed" color="primary" className={classes.appBar}>
             <div className={clsx(classes.drawerSpacerTransition, (rootStore.drawerOpen & rootStore.isLoggedIn ? classes.drawerSpacer : null))}>
                 <Toolbar>
-                    <Fab color="secondary" aria-label="add" className={classes.fabButton}>
+                    <Fab color="secondary" aria-label="add" className={classes.fabButton} onClick={onAdd}>
                         <AddIcon />
                     </Fab>
                     <div className={classes.grow} />

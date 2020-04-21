@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { InstitutionStoreContext } from '../../store/InstitutitionStore';
 import { CircularProgress } from '@material-ui/core';
 import { observer } from 'mobx-react-lite';
@@ -7,6 +7,8 @@ import { AccountStoreContext } from '../../store/AccountStore';
 import { RootStoreContext } from '../../store/RootStore';
 import Institution from './Institution';
 import AddFooter from '../../common/component/AddFooter';
+import InstitutionModal from './InstitutionModal';
+import InstitutionObject from '../../store/Institution';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -21,6 +23,7 @@ const Institutions = observer(() => {
     const accountStore = useContext(AccountStoreContext);
     const rootStore = useContext(RootStoreContext);
     const classes = useStyles();
+    const [modal, setModal] = useState(null);
 
     useEffect(() => {
         Promise.all([
@@ -28,6 +31,14 @@ const Institutions = observer(() => {
             accountStore.load()
         ]);
     }, [institutionStore, accountStore]);
+
+    const openModal = () => setModal(
+        <InstitutionModal
+            institution={new InstitutionObject()}
+            onClose={() => setModal(null)}
+            onSave={institution => institutionStore.institutions.push(institution)}
+        />
+    );
 
     if (rootStore.loading.has('institutions')) {
         return <CircularProgress />;
@@ -40,7 +51,8 @@ const Institutions = observer(() => {
                     .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
                     .map(institution => <Institution key={institution.id} institution={institution} />)
             }
-            <AddFooter />
+            <AddFooter onAdd={openModal} />
+            {modal}
         </div>
     );
 });

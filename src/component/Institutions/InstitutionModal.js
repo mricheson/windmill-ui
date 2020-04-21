@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { RootStoreContext } from '../../store/RootStore';
 import EditModal from '../../common/component/EditModal';
 
-const InstitutionModal = observer(({ institution, onClose }) => {
+const InstitutionModal = observer(({ institution, onClose, onSave = () => { } }) => {
     const rootStore = useContext(RootStoreContext);
     const [editedName, setEditedName] = useState(institution.name);
 
@@ -14,6 +14,7 @@ const InstitutionModal = observer(({ institution, onClose }) => {
 
     const save = () => {
         institution.save({ name: editedName })
+            .then(() => onSave(institution))
             .then(onClose);
     }
 
