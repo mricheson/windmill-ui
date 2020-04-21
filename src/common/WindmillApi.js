@@ -40,3 +40,12 @@ export function getAccountTypes() {
     return get('/api/accounttypes/');
 }
 
+export function getBudgetGroups() {
+    return get('/api/budgets/groups/');
+}
+
+export function saveBudgetGroup(budgetGroup) {
+    return budgetGroup.id
+        ? put(`/api/budgets/groups/${budgetGroup.id}`, budgetGroup)
+        : post('/api/budgets/groups/', budgetGroup);;
+}
