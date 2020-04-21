@@ -5,7 +5,7 @@ import { RootStoreContext } from '../../../store/RootStore';
 import EditModal from '../../../common/component/EditModal';
 import { AccountTypeStoreContext } from '../../../store/AccountTypeStore';
 
-const AccountModal = observer(({ account, onClose, onSave = () => { } }) => {
+const AccountModal = observer(({ account, onClose, onSave = () => { }, mode }) => {
     const rootStore = useContext(RootStoreContext);
     const accountTypeStore = useContext(AccountTypeStoreContext);
     const [editedName, setEditedName] = useState(account.name);
@@ -33,7 +33,7 @@ const AccountModal = observer(({ account, onClose, onSave = () => { } }) => {
     const isSaving = rootStore.loading.has('account');
 
     return (
-        <EditModal onSave={save} onClose={onClose} isSaving={isSaving} title="Edit Account">
+        <EditModal onSave={save} onClose={onClose} isSaving={isSaving} title="Account" mode={mode}>
             <TextField
                 autoFocus
                 label="Name"

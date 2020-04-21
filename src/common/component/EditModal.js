@@ -15,7 +15,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const EditModal = ({ onSave, onClose, isSaving, title, children }) => {
+const EditModal = ({ onSave, onClose, isSaving, title, mode = "edit", children }) => {
     const theme = useTheme();
     const classes = useStyle();
 
@@ -35,7 +35,7 @@ const EditModal = ({ onSave, onClose, isSaving, title, children }) => {
                 className: classes.root
             }}
         >
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle>{`${mode.charAt(0).toUpperCase() + mode.slice(1)} ${title}`}</DialogTitle>
             <DialogContent>
                 <FormGroup className={classes.formGroup}>
                     {styledChildren}

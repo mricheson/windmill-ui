@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { RootStoreContext } from '../../store/RootStore';
 import EditModal from '../../common/component/EditModal';
 
-const InstitutionModal = observer(({ institution, onClose, onSave = () => { }, mode = "edit" }) => {
+const InstitutionModal = observer(({ institution, onClose, onSave = () => { }, mode }) => {
     const rootStore = useContext(RootStoreContext);
     const [editedName, setEditedName] = useState(institution.name);
 
@@ -25,7 +25,8 @@ const InstitutionModal = observer(({ institution, onClose, onSave = () => { }, m
             onSave={save}
             onClose={onClose}
             isSaving={isSaving}
-            title={`${mode.charAt(0).toUpperCase() + mode.slice(1)} Institution`}
+            title="Institution"
+            mode={mode}
         >
             <TextField
                 autoFocus
