@@ -7,6 +7,8 @@ import AccountIcon from '../Institutions/Accounts/AccountIcon';
 import EditIcon from '@material-ui/icons/Edit';
 import { BudgetTemplateStoreContext } from '../../store/BudgetTemplateStore';
 import AddIcon from '@material-ui/icons/Add';
+import BudgetTemplateAmount from './BudgetTemplateAmount';
+import BudgetTemplate from '../../store/BudgetTemplate';
 
 const useStyles = makeStyles(theme => ({
     summary: {
@@ -44,8 +46,8 @@ const BudgetGroup = observer(({ budgetGroup }) => {
         />
     );
 
-    const templatesForThisGroup = budgetTemplateStore.budgetTemplates.filter(template => template.category.budgetGroup.id === budgetGroup.id);
-    const renderedTemplates = templatesForThisGroup.map(template => <div>{template.name}</div>);
+    const templatesForThisGroup = budgetTemplateStore.budgetTemplates.filter(template => template.group.id === budgetGroup.id);
+    const renderedTemplates = templatesForThisGroup.map(template => <BudgetTemplateAmount budgetTemplate={template} />);
     const totalAmount = templatesForThisGroup.reduce((total, template) => total + template.amount, 0.0);
 
     return (
@@ -75,7 +77,7 @@ const BudgetGroup = observer(({ budgetGroup }) => {
                     </div>
                 </ExpansionPanelDetails>
                 <ExpansionPanelActions className={classes.actions} >
-                    <IconButton onClick={() => { }}>
+                    <IconButton onClick={() => budgetTemplateStore.budgetTemplates.push(new BudgetTemplate({ group: budgetGroup }))}>
                         <AddIcon />
                     </IconButton>
                 </ExpansionPanelActions>

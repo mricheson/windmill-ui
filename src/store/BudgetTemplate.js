@@ -6,7 +6,8 @@ class BudgetTemplate {
     name = '';
     id = '';
     amount = 0.0;
-    category = {}
+    category = {};
+    group = {};
 
     constructor(newBudgetTemplate = {}) {
         this.populate(newBudgetTemplate);
@@ -17,6 +18,7 @@ class BudgetTemplate {
         this.name = budgetTemplate.description || '';
         this.amount = budgetTemplate.amount || 0.0;
         this.category = budgetTemplate.budgetCategory || {};
+        this.group = this.category.budgetGroup || budgetTemplate.group || {};
     }
 
     savableObject = root => {
