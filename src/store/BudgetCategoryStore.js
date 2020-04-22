@@ -10,7 +10,7 @@ class BudgetCategoryStore {
         rootStore.startLoading('budgetCategories');
         return getBudgetCategories()
             .then(response => {
-                this.budgetGroups = response.data.map;
+                this.budgetCategories = response.data;
             })
             .catch(e => {
                 console.log(e);

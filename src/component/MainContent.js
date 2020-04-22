@@ -45,7 +45,7 @@ const MainContent = observer(() => {
             budgetCategoryStore.budgetCategories = [];
         }
 
-    }, [rootStore.isLoggedIn, accountTypeStore])
+    }, [rootStore.isLoggedIn, accountTypeStore, budgetCategoryStore])
 
     return (
         <div >

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, makeStyles, IconButton, ExpansionPanelActions } from '@material-ui/core';
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, makeStyles, IconButton, ExpansionPanelActions, InputLabel } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import BudgetGroupModal from './BudgetGroupModal';
 import AccountIcon from '../Institutions/Accounts/AccountIcon';
@@ -9,6 +9,7 @@ import { BudgetTemplateStoreContext } from '../../store/BudgetTemplateStore';
 import AddIcon from '@material-ui/icons/Add';
 import BudgetTemplateAmount from './BudgetTemplateAmount';
 import BudgetTemplate from '../../store/BudgetTemplate';
+import { v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles(theme => ({
     summary: {
@@ -27,10 +28,24 @@ const useStyles = makeStyles(theme => ({
     },
     templates: {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        width: '100%'
     },
     actions: {
         justifyContent: 'center'
+    },
+    labels: {
+        width: 'calc(100% - 108px)',
+        display: 'flex'
+    },
+    categoryColumn: {
+        width: '33%'
+    },
+    nameColumn: {
+        width: '50%'
+    },
+    amountColumn: {
+        width: '17%'
     }
 }));
 
@@ -47,7 +62,7 @@ const BudgetGroup = observer(({ budgetGroup }) => {
     );
 
     const templatesForThisGroup = budgetTemplateStore.budgetTemplates.filter(template => template.group.id === budgetGroup.id);
-    const renderedTemplates = templatesForThisGroup.map(template => <BudgetTemplateAmount budgetTemplate={template} />);
+    const renderedTemplates = templatesForThisGroup.map(template => <BudgetTemplateAmount key={template.id} budgetTemplate={template} />);
     const totalAmount = templatesForThisGroup.reduce((total, template) => total + template.amount, 0.0);
 
     return (
@@ -73,11 +88,16 @@ const BudgetGroup = observer(({ budgetGroup }) => {
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <div className={classes.templates}>
+                        <div className={classes.labels}>
+                            <InputLabel className={classes.categoryColumn}>Category</InputLabel>
+                            <InputLabel className={classes.nameColumn}>Name</InputLabel>
+                            <InputLabel className={classes.amountColumn}>Amount</InputLabel>
+                        </div>
                         {renderedTemplates}
                     </div>
                 </ExpansionPanelDetails>
                 <ExpansionPanelActions className={classes.actions} >
-                    <IconButton onClick={() => budgetTemplateStore.budgetTemplates.push(new BudgetTemplate({ group: budgetGroup }))}>
+                    <IconButton onClick={() => budgetTemplateStore.budgetTemplates.push(new BudgetTemplate({ id: uuidv4(), group: budgetGroup }))}>
                         <AddIcon />
                     </IconButton>
                 </ExpansionPanelActions>

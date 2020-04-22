@@ -14,7 +14,8 @@ const useStyles = makeStyles(theme => ({
         flexWrap: 'wrap',
         justifyContent: 'center',
         flexDirection: 'column',
-        width: theme.breakpoints.values.sm
+        width: theme.breakpoints.values.md,
+        minWidth: theme.breakpoints.values.sm
     }
 }));
 
@@ -29,7 +30,7 @@ const BudtgetTemplate = observer(() => {
             budgetGroupStore.load(),
             budgetTemplateStore.load()
         ]);
-    }, [budgetGroupStore]);
+    }, [budgetGroupStore, budgetTemplateStore]);
 
     const openModal = () => setModal(
         <BudgetGroupModal
