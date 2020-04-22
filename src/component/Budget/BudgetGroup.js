@@ -72,7 +72,7 @@ const BudgetGroup = observer(({ budgetGroup }) => {
                     </div>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    <div classNamec={classes.templates}>
+                    <div className={classes.templates}>
                         {renderedTemplates}
                     </div>
                 </ExpansionPanelDetails>
