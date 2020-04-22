@@ -8,7 +8,7 @@ class BudgetGroupStore {
     budgetGroups = [];
 
     load = () => {
-        rootStore.startLoading('budgetGroup');
+        rootStore.startLoading('budgetGroups');
         return getBudgetGroups()
             .then(response => {
                 this.budgetGroups = response.data.map(group => new BudgetGroup(group));
@@ -17,7 +17,7 @@ class BudgetGroupStore {
                 console.log(e);
             })
             .finally(() => {
-                rootStore.stopLoading('budgetGroup');
+                rootStore.stopLoading('budgetGroups');
             });
     }
 }

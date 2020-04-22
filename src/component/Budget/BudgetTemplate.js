@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 import BudgetGroupObject from '../../store/BudgetGroup';
 import { BudgetGroupStoreContext } from '../../store/BudgetGroupStore';
 import BudgetGroup from './BudgetGroup';
+import { BudgetTemplateStoreContext } from '../../store/BudgetTemplateStore';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -20,11 +21,13 @@ const useStyles = makeStyles(theme => ({
 const BudtgetTemplate = observer(() => {
     const classes = useStyles();
     const budgetGroupStore = useContext(BudgetGroupStoreContext);
+    const budgetTemplateStore = useContext(BudgetTemplateStoreContext);
     const [modal, setModal] = useState(null);
 
     useEffect(() => {
         Promise.all([
-            budgetGroupStore.load()
+            budgetGroupStore.load(),
+            budgetTemplateStore.load()
         ]);
     }, [budgetGroupStore]);
 

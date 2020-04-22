@@ -53,3 +53,13 @@ export function saveBudgetGroup(budgetGroup) {
 export function getBudgetCategories() {
     return get(`/api/budgets/categories/`);
 }
+
+export function getBudgetTemplates() {
+    return get(`/api/budgets/templates/`);
+}
+
+export function saveBudgetTemplate(budgetTemplate) {
+    return budgetTemplate.id
+        ? put(`/api/budgets/templates/${budgetTemplate.id}`, budgetTemplate)
+        : post('/api/budgets/templates/', budgetTemplate);;
+}
