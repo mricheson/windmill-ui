@@ -11,6 +11,7 @@ import PrivateRoute from './Security/PrivateRoute';
 import OAuth2RedirectHandler from './Security/OAuth2RedirectHandler';
 import { RootStoreContext } from '../store/RootStore';
 import { AccountTypeStoreContext } from '../store/AccountTypeStore';
+import { BudgetCategoryStoreContext } from '../store/BudgetCategoryStore';
 
 const useStyles = makeStyles(theme => ({
     offset: theme.mixins.toolbar,
@@ -27,16 +28,21 @@ const MainContent = observer(() => {
     const history = useHistory();
     const rootStore = useContext(RootStoreContext);
     const accountTypeStore = useContext(AccountTypeStoreContext);
+    const budgetCategoryStore = useContext(BudgetCategoryStoreContext);
 
     if (!rootStore.isLoggedIn && location.pathname !== '/') {
         history.push('/');
     }
 
     useEffect(() => {
-        if(rootStore.isLoggedIn){
-            accountTypeStore.load();
+        if (rootStore.isLoggedIn) {
+            Promise.all([
+                accountTypeStore.load(),
+                budgetCategoryStore.load()
+            ]);
         } else {
             accountTypeStore.accountTypes = [];
+            budgetCategoryStore.budgetCategories = [];
         }
 
     }, [rootStore.isLoggedIn, accountTypeStore])

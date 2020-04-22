@@ -49,3 +49,7 @@ export function saveBudgetGroup(budgetGroup) {
         ? put(`/api/budgets/groups/${budgetGroup.id}`, budgetGroup)
         : post('/api/budgets/groups/', budgetGroup);;
 }
+
+export function getBudgetCategories() {
+    return get(`/api/budgets/categories/`);
+}
