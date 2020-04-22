@@ -5,12 +5,15 @@ import BudgetGroupModal from './BudgetGroupModal';
 import { observer } from 'mobx-react-lite';
 import BudgetGroupObject from '../../store/BudgetGroup';
 import { BudgetGroupStoreContext } from '../../store/BudgetGroupStore';
+import BudgetGroup from './BudgetGroup';
 
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
         flexWrap: 'wrap',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        flexDirection: 'column',
+        width: theme.breakpoints.values.sm
     }
 }));
 
@@ -20,7 +23,9 @@ const BudtgetTemplate = observer(() => {
     const [modal, setModal] = useState(null);
 
     useEffect(() => {
-        budgetGroupStore.load();
+        Promise.all([
+            budgetGroupStore.load()
+        ]);
     }, [budgetGroupStore]);
 
     const openModal = () => setModal(
@@ -37,8 +42,8 @@ const BudtgetTemplate = observer(() => {
         <div className={classes.root}>
             {
                 budgetGroupStore.budgetGroups.slice()
-                    .sort((a, b) => a.position <= b.position)
-                    .map(group => group.name)
+                    .sort((a, b) => a.position - b.position)
+                    .map(group => <BudgetGroup key={group.id} budgetGroup={group} />)
             }
             <AddFooter onAdd={openModal} />
             {modal}

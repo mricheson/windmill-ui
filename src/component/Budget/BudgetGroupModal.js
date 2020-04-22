@@ -17,7 +17,7 @@ const BudgetGroupModal = observer(({ budgetGroup, onClose, onSave = () => { }, m
         budgetGroup.save({
             name: editedName,
             isSavings: editedIsSaving,
-            position: nextPosition
+            position: mode === 'add' ? nextPosition : budgetGroup.position
         })
             .then(() => onSave(budgetGroup))
             .then(onClose);

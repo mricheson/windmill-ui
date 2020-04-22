@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
         height: 272,
         overflowY: 'auto'
     }
-}))
+}));
 
 const InstitutionCard = observer(({ institution }) => {
     const classes = useStyles();

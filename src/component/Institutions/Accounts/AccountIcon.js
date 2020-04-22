@@ -5,9 +5,6 @@ import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import { Icon, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-    icon: {
-        height: '100%'
-    },
     iconImage: {
         textAlign: 'center'
     }
@@ -21,15 +18,16 @@ const AccountIcon = ({ accountType }) => {
             <img src={file} alt={alt} className={classes.iconImage} />
         </Icon>
     );
-    
-    switch (accountType) {
-        case 'Credit':
+
+    switch (accountType.toLowerCase()) {
+        case 'credit':
             return <CreditCardIcon />;
-        case 'Savings':
-            return iconFromFile('./piggy-bank.svg', 'Savings');
-        case 'Checking':
-            return iconFromFile('./check.svg', 'Checking');
-        case 'Investment':
+        case 'savings':
+            return iconFromFile('/piggy-bank.svg', 'Savings');
+        case 'checking':
+        case 'expense':
+            return iconFromFile('/check.svg', 'Checking');
+        case 'investment':
             return <TrendingUpIcon />;
         default:
             return <AttachMoneyIcon />;
