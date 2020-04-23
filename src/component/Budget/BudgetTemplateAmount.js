@@ -6,6 +6,7 @@ import { BudgetCategoryStoreContext } from '../../store/BudgetCategoryStore';
 import ClearIcon from '@material-ui/icons/Clear';
 import CheckIcon from '@material-ui/icons/Check';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { BudgetTemplateStoreContext } from '../../store/BudgetTemplateStore';
 
 const NumberFormatCustom = ({ name, inputRef, onChange, ...other }) => (
     <NumberFormat
@@ -54,6 +55,7 @@ const useStyles = makeStyles(theme => ({
 const BudgetTemplateAmount = observer(({ budgetTemplate }) => {
     const classes = useStyles();
     const budgetCategoryStore = useContext(BudgetCategoryStoreContext);
+    const budgetTemplateStore = useContext(BudgetTemplateStoreContext);
     const [editedName, setEditedName] = useState(budgetTemplate.name);
     const [editedAmount, setEditedAmount] = useState(budgetTemplate.amount);
     const [editedCategory, setEditedCategory] = useState(budgetTemplate.category.id);
@@ -74,7 +76,21 @@ const BudgetTemplateAmount = observer(({ budgetTemplate }) => {
         setEditedCategory(budgetTemplate.category.id || '');
         setEditedName(budgetTemplate.name);
         setEditedAmount(budgetTemplate.amount);
-    }
+    };
+
+    const save = () => {
+        budgetTemplate.save({
+            id: isNaN(budgetTemplate.id) ? null : budgetTemplate.id,
+            name: editedName,
+            amount: editedAmount,
+            category: budgetCategoryStore.budgetCategories.find(category => category.id === editedCategory)
+        });
+    };
+
+    const deleteThis = () => {
+        const thisTemplate = budgetTemplateStore.budgetTemplates.find(template => template.id === budgetTemplate.id);
+        budgetTemplateStore.budgetTemplates.remove(thisTemplate);
+    };
 
     return (
         <div className={classes.root}>
@@ -102,14 +118,14 @@ const BudgetTemplateAmount = observer(({ budgetTemplate }) => {
                     className={classes.amountColumn}
                 />
             </div>
-            <IconButton onClick={() => { }} disabled={!canSave} edge="end" >
+            <IconButton onClick={save} disabled={!canSave} edge="end" >
                 <CheckIcon color={canSave ? 'primary' : 'disabled'} fontSize="small" />
             </IconButton>
             <IconButton onClick={clear} disabled={!canClear} edge="end">
                 <ClearIcon color={canClear ? 'primary' : 'disabled'} fontSize="small" />
             </IconButton>
-            <IconButton onClick={clear} disabled={!isNaN(budgetTemplate.id)}>
-                <DeleteIcon color={isNaN(budgetTemplate.id) ? 'primary' : 'disabled'}  fontSize="small" />
+            <IconButton onClick={deleteThis} disabled={!isNaN(budgetTemplate.id)}>
+                <DeleteIcon color={isNaN(budgetTemplate.id) ? 'primary' : 'disabled'} fontSize="small" />
             </IconButton>
         </div>
     )
