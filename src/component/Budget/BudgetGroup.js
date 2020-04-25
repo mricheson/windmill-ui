@@ -50,6 +50,22 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const getAccountType = (isSavings, totalAmount) => {
+    if (isSavings) {
+        return 'savings';
+    }
+
+    if (totalAmount > 0) {
+        return 'income';
+    }
+
+    if (totalAmount < 0) {
+        return 'expense';
+    }
+
+    return '';
+}
+
 const BudgetGroup = observer(({ budgetGroup }) => {
     const classes = useStyles();
     const theme = useTheme();
@@ -68,6 +84,8 @@ const BudgetGroup = observer(({ budgetGroup }) => {
     const renderedTemplates = templatesForThisGroup.map(template => <BudgetTemplateAmount key={template.id} budgetTemplate={template} />);
     const totalAmount = templatesForThisGroup.reduce((total, template) => total + template.amount, 0.0);
 
+    const accountType = getAccountType(budgetGroup.isSavings, totalAmount);
+
     return (
         <>
             <ExpansionPanel>
@@ -76,7 +94,7 @@ const BudgetGroup = observer(({ budgetGroup }) => {
                 >
                     <div className={classes.summary}>
                         <div className={classes.column}>
-                            <AccountIcon accountType={budgetGroup.isSavings ? 'savings' : 'expense'} />
+                            <AccountIcon accountType={accountType} />
                             <div className={classes.title}>
                                 {budgetGroup.name}
                             </div>

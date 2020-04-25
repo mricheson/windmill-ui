@@ -27,6 +27,8 @@ const AccountIcon = ({ accountType }) => {
         case 'checking':
         case 'expense':
             return iconFromFile('/check.svg', 'Checking');
+        case 'income':
+            return iconFromFile('/income.svg', 'Income');
         case 'investment':
             return <TrendingUpIcon />;
         default:
