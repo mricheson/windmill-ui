@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { makeStyles, CircularProgress } from '@material-ui/core';
+import { makeStyles, CircularProgress, Fab } from '@material-ui/core';
 import AddFooter from '../../common/component/AddFooter';
 import BudgetGroupModal from './BudgetGroupModal';
 import { observer } from 'mobx-react-lite';
@@ -8,6 +8,7 @@ import { BudgetGroupStoreContext } from '../../store/BudgetGroupStore';
 import BudgetGroup from './BudgetGroup';
 import { BudgetTemplateStoreContext } from '../../store/BudgetTemplateStore';
 import { RootStoreContext } from '../../store/RootStore';
+import LaunchIcon from '@material-ui/icons/Launch';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -44,6 +45,12 @@ const BudtgetTemplate = observer(() => {
         />
     );
 
+    const createNewMonthBudget = (
+        <Fab onClick={() => console.log('create new budget')}>
+            <LaunchIcon />
+        </Fab>
+    );
+
     if (rootStore.loading.has('budgetGroups')) {
         return <CircularProgress />;
     }
@@ -55,7 +62,7 @@ const BudtgetTemplate = observer(() => {
                     .sort((a, b) => a.position - b.position)
                     .map(group => <BudgetGroup key={group.id} budgetGroup={group} />)
             }
-            <AddFooter onAdd={openModal} />
+            <AddFooter onAdd={openModal} right={createNewMonthBudget} />
             {modal}
         </div>
     );

@@ -14,13 +14,15 @@ const useStyles = makeStyles(theme => ({
     grow: {
         flexGrow: 1,
     },
-    fabButton: {
+    buttons: {
         position: 'absolute',
         zIndex: 1,
         top: -30,
         left: 0,
         right: 0,
-        margin: '0 auto',
+        margin: [[0, theme.spacing(2)]],
+        display: 'flex',
+        justifyContent: 'space-between'
     },
     drawerSpacer: {
         paddingLeft: DRAWER_WIDTH,
@@ -30,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const AddFooter = observer(({ onAdd }) => {
+const AddFooter = observer(({ onAdd, left, right }) => {
     const rootStore = useContext(RootStoreContext);
     const classes = useStyles();
 
@@ -38,10 +40,13 @@ const AddFooter = observer(({ onAdd }) => {
         <AppBar position="fixed" color="primary" className={classes.appBar}>
             <div className={clsx(classes.drawerSpacerTransition, (rootStore.drawerOpen & rootStore.isLoggedIn ? classes.drawerSpacer : null))}>
                 <Toolbar>
-                    <Fab color="secondary" aria-label="add" className={classes.fabButton} onClick={onAdd}>
-                        <AddIcon />
-                    </Fab>
-                    <div className={classes.grow} />
+                    <div className={classes.buttons}>
+                        {left || <div />}
+                        <Fab color="secondary" aria-label="add" onClick={onAdd}>
+                            <AddIcon />
+                        </Fab>
+                        {right || <div />}
+                    </div>
                 </Toolbar>
             </div>
         </AppBar>
