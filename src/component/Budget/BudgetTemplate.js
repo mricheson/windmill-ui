@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, CircularProgress } from '@material-ui/core';
 import AddFooter from '../../common/component/AddFooter';
 import BudgetGroupModal from './BudgetGroupModal';
 import { observer } from 'mobx-react-lite';
@@ -7,6 +7,7 @@ import BudgetGroupObject from '../../store/BudgetGroup';
 import { BudgetGroupStoreContext } from '../../store/BudgetGroupStore';
 import BudgetGroup from './BudgetGroup';
 import { BudgetTemplateStoreContext } from '../../store/BudgetTemplateStore';
+import { RootStoreContext } from '../../store/RootStore';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -23,6 +24,7 @@ const BudtgetTemplate = observer(() => {
     const classes = useStyles();
     const budgetGroupStore = useContext(BudgetGroupStoreContext);
     const budgetTemplateStore = useContext(BudgetTemplateStoreContext);
+    const rootStore = useContext(RootStoreContext);
     const [modal, setModal] = useState(null);
 
     useEffect(() => {
@@ -41,6 +43,10 @@ const BudtgetTemplate = observer(() => {
             nextPosition={budgetGroupStore.budgetGroups.length}
         />
     );
+
+    if (rootStore.loading.has('budgetGroups')) {
+        return <CircularProgress />;
+    }
 
     return (
         <div className={classes.root}>

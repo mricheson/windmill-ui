@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, makeStyles, IconButton, ExpansionPanelActions, InputLabel } from '@material-ui/core';
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, makeStyles, IconButton, ExpansionPanelActions, InputLabel, CircularProgress, useTheme } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import BudgetGroupModal from './BudgetGroupModal';
 import AccountIcon from '../Institutions/Accounts/AccountIcon';
@@ -10,6 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import BudgetTemplateAmount from './BudgetTemplateAmount';
 import BudgetTemplate from '../../store/BudgetTemplate';
 import { v4 as uuidv4 } from 'uuid';
+import { RootStoreContext } from '../../store/RootStore';
 
 const useStyles = makeStyles(theme => ({
     summary: {
@@ -51,8 +52,10 @@ const useStyles = makeStyles(theme => ({
 
 const BudgetGroup = observer(({ budgetGroup }) => {
     const classes = useStyles();
+    const theme = useTheme();
     const [groupModal, setGroupModal] = useState(null);
     const budgetTemplateStore = useContext(BudgetTemplateStoreContext);
+    const rootStore = useContext(RootStoreContext);
 
     const openGroupModal = () => setGroupModal(
         <BudgetGroupModal
@@ -82,7 +85,7 @@ const BudgetGroup = observer(({ budgetGroup }) => {
                             </IconButton>
                         </div>
                         <div className={classes.column}>
-                            {`$${totalAmount.toFixed(2)}`}
+                            {rootStore.loading.has('budgetTemplates') ? <CircularProgress size={theme.typography.fontSize} /> : `$${totalAmount.toFixed(2)}`}
                         </div>
                     </div>
                 </ExpansionPanelSummary>
