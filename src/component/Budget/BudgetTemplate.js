@@ -10,6 +10,7 @@ import { BudgetTemplateStoreContext } from '../../store/BudgetTemplateStore';
 import { RootStoreContext } from '../../store/RootStore';
 import LaunchIcon from '@material-ui/icons/Launch';
 import CreateBudgetModal from './CreateBudgetModal';
+import { BudgetStoreContext } from '../../store/BudgetStore';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -26,6 +27,7 @@ const BudtgetTemplate = observer(() => {
     const classes = useStyles();
     const budgetGroupStore = useContext(BudgetGroupStoreContext);
     const budgetTemplateStore = useContext(BudgetTemplateStoreContext);
+    const budgetStore = useContext(BudgetStoreContext);
     const rootStore = useContext(RootStoreContext);
     const [modal, setModal] = useState(null);
     const [createBudgetModal, setCreateBudgetModal] = useState(null);
@@ -48,9 +50,9 @@ const BudtgetTemplate = observer(() => {
     );
 
     const openCreateBudgetModal = () => setCreateBudgetModal(
-        <CreateBudgetModal 
+        <CreateBudgetModal
             onClose={() => setCreateBudgetModal(null)}
-            onCreate={date => Promise.resolve(console.log(date))}
+            onCreate={date => budgetStore.create(date.getFullYear(), date.getMonth() + 1)}
         />
     );
 

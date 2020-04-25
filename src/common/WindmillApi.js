@@ -64,6 +64,10 @@ export function saveBudgetTemplate(budgetTemplate) {
         : post('/api/budgets/templates/', budgetTemplate);;
 }
 
+export function createBudget(year, month) {
+    return post(`/api/budgets/${year}/${month}`, {});
+}
+
 export function getBudgets() {
     return get(`/api/budgets/`);
 }
