@@ -93,7 +93,7 @@ const Layout = observer(() => {
                 <Toolbar />
                 <div className={classes.drawerContainer}>
                     <List>
-                        <ListItem button onClick={() => history.push('/transactions')} selected={location.pathname === '/transactions'}>
+                        <ListItem button onClick={() => history.push('/transactions')} selected={location.pathname.startsWith('/transactions')}>
                             <ListItemIcon>
                                 <ReceiptIcon />
                             </ListItemIcon>
