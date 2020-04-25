@@ -2,6 +2,7 @@ import { decorate, observable, action } from 'mobx';
 import { createContext } from 'react';
 import { getBudgets, createBudget } from '../common/WindmillApi';
 import { rootStore } from './RootStore';
+import Budget from './Budget';
 
 class BudgetStore {
     budgets = [];
@@ -10,7 +11,7 @@ class BudgetStore {
         rootStore.startLoading('budgets');
         return getBudgets()
             .then(response => {
-                this.budgets = response.data;
+                this.budgets = response.data.map(budget => new Budget(budget));
             })
             .catch(e => {
                 console.log(e);
