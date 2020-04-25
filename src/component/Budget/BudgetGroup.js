@@ -11,6 +11,9 @@ import BudgetTemplateAmount from './BudgetTemplateAmount';
 import BudgetTemplate from '../../store/BudgetTemplate';
 import { v4 as uuidv4 } from 'uuid';
 import { RootStoreContext } from '../../store/RootStore';
+import red from '@material-ui/core/colors/red';
+import green from '@material-ui/core/colors/green';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
     summary: {
@@ -47,6 +50,12 @@ const useStyles = makeStyles(theme => ({
     },
     amountColumn: {
         width: '17%'
+    },
+    income: {
+        color: green[900]
+    },
+    expense: {
+        color: red[900]
     }
 }));
 
@@ -103,7 +112,14 @@ const BudgetGroup = observer(({ budgetGroup }) => {
                             </IconButton>
                         </div>
                         <div className={classes.column}>
-                            {rootStore.loading.has('budgetTemplates') ? <CircularProgress size={theme.typography.fontSize} /> : `$${totalAmount.toFixed(2)}`}
+                            {rootStore.loading.has('budgetTemplates')
+                                ? <CircularProgress size={theme.typography.fontSize} />
+                                : <div
+                                    className={clsx(totalAmount > 0 ? classes.income : null, totalAmount < 0 ? classes.expense : null)}
+                                >
+                                    ${totalAmount.toFixed(2)}
+                                </div>
+                            }
                         </div>
                     </div>
                 </ExpansionPanelSummary>
