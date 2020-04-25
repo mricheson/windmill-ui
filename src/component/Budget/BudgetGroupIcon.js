@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const AccountIcon = ({ accountType }) => {
+const BudgetGroupIcon = ({ type }) => {
     const classes = useStyles();
 
     const iconFromFile = (file, alt = '') => (
@@ -19,18 +19,16 @@ const AccountIcon = ({ accountType }) => {
         </Icon>
     );
 
-    switch (accountType.toLowerCase()) {
-        case 'credit':
-            return <CreditCardIcon />;
+    switch (type.toLowerCase()) {
+        case 'expense':
+            return iconFromFile('/check.svg', 'Checking');
+        case 'income':
+            return iconFromFile('/income.svg', 'Income');
         case 'savings':
             return iconFromFile('/piggy-bank.svg', 'Savings');
-        case 'checking':
-            return iconFromFile('/check.svg', 'Checking');
-        case 'investment':
-            return <TrendingUpIcon />;
         default:
             return <AttachMoneyIcon />;
     }
 }
 
-export default AccountIcon;
+export default BudgetGroupIcon;

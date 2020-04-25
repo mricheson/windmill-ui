@@ -14,6 +14,7 @@ import { RootStoreContext } from '../../store/RootStore';
 import red from '@material-ui/core/colors/red';
 import green from '@material-ui/core/colors/green';
 import clsx from 'clsx';
+import BudgetGroupIcon from './BudgetGroupIcon';
 
 const useStyles = makeStyles(theme => ({
     summary: {
@@ -59,7 +60,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const getAccountType = (isSavings, totalAmount) => {
+const getType = (isSavings, totalAmount) => {
     if (isSavings) {
         return 'savings';
     }
@@ -93,7 +94,7 @@ const BudgetGroup = observer(({ budgetGroup }) => {
     const renderedTemplates = templatesForThisGroup.map(template => <BudgetTemplateAmount key={template.id} budgetTemplate={template} />);
     const totalAmount = templatesForThisGroup.reduce((total, template) => total + template.amount, 0.0);
 
-    const accountType = getAccountType(budgetGroup.isSavings, totalAmount);
+    const accountType = getType(budgetGroup.isSavings, totalAmount);
 
     return (
         <>
@@ -103,7 +104,7 @@ const BudgetGroup = observer(({ budgetGroup }) => {
                 >
                     <div className={classes.summary}>
                         <div className={classes.column}>
-                            <AccountIcon accountType={accountType} />
+                            <BudgetGroupIcon type={accountType} />
                             <div className={classes.title}>
                                 {budgetGroup.name}
                             </div>
