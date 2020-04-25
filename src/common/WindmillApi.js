@@ -63,3 +63,7 @@ export function saveBudgetTemplate(budgetTemplate) {
         ? put(`/api/budgets/templates/${budgetTemplate.id}`, budgetTemplate)
         : post('/api/budgets/templates/', budgetTemplate);;
 }
+
+export function getBudgets() {
+    return get(`/api/budgets/`);
+}
