@@ -32,7 +32,7 @@ const BudgetList = observer(({ open = false }) => {
         <div className={classes.root}>
             {
                 budgetStore.budgets
-                    .filter(budget => budget.reconciledIndicator !== open)
+                    .filter(budget => budget.isReconciled !== open)
                     .sort((a, b) => new Date(b.date) - new Date(a.date))
                     .map(budget => <Budget budget={budget} />)
             }
