@@ -55,8 +55,11 @@ const MainContent = observer(() => {
                     <PrivateRoute exact path="/transactions">
                         <Transactions />
                     </PrivateRoute>
+                    <PrivateRoute exact path="/transactions/:year/:month">
+                        <Transactions />
+                    </PrivateRoute>
                     <PrivateRoute exact path="/budgets/open">
-                        <BudgetList open/>
+                        <BudgetList open />
                     </PrivateRoute>
                     <PrivateRoute exact path="/budgets/closed">
                         <BudgetList />

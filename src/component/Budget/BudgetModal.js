@@ -6,6 +6,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import moment from 'moment';
 import BudgetGroupIcon from './BudgetGroupIcon';
 import TocIcon from '@material-ui/icons/Toc';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     close: {
@@ -20,7 +21,7 @@ const useStyles = makeStyles(theme => ({
         paddingBottom: 0
     },
     title: {
-      flexGrow: 1,
+        flexGrow: 1,
     },
 }));
 
@@ -46,6 +47,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const BudgetModal = observer(({ budget, onClose }) => {
     const classes = useStyles();
+    const history = useHistory();
     const rootStore = useContext(RootStoreContext);
 
     useEffect(() => {
@@ -84,6 +86,12 @@ const BudgetModal = observer(({ budget, onClose }) => {
         );
     })
 
+    const goToTransactions = () => {
+        onClose();
+        const date = moment(budget.date);
+        history.push(`/transactions/${date.year()}/${date.month() + 1}`)
+    }
+
     return (
         <Dialog fullScreen open onClose={onClose} TransitionComponent={Transition}>
             <AppBar className={classes.appBar}>
@@ -94,7 +102,7 @@ const BudgetModal = observer(({ budget, onClose }) => {
                     <Typography variant="h6" className={classes.title}>
                         {moment(budget.date).format('MMMM YYYY')}
                     </Typography>
-                    <IconButton color="inherit" onClick={onClose}>
+                    <IconButton color="inherit" onClick={goToTransactions}>
                         <TocIcon />
                     </IconButton>
                 </Toolbar>
