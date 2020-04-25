@@ -9,6 +9,7 @@ import BudgetGroup from './BudgetGroup';
 import { BudgetTemplateStoreContext } from '../../store/BudgetTemplateStore';
 import { RootStoreContext } from '../../store/RootStore';
 import LaunchIcon from '@material-ui/icons/Launch';
+import CreateBudgetModal from './CreateBudgetModal';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -27,6 +28,7 @@ const BudtgetTemplate = observer(() => {
     const budgetTemplateStore = useContext(BudgetTemplateStoreContext);
     const rootStore = useContext(RootStoreContext);
     const [modal, setModal] = useState(null);
+    const [createBudgetModal, setCreateBudgetModal] = useState(null);
 
     useEffect(() => {
         Promise.all([
@@ -45,8 +47,15 @@ const BudtgetTemplate = observer(() => {
         />
     );
 
+    const openCreateBudgetModal = () => setCreateBudgetModal(
+        <CreateBudgetModal 
+            onClose={() => setCreateBudgetModal(null)}
+            onCreate={date => Promise.resolve(console.log(date))}
+        />
+    );
+
     const createNewMonthBudget = (
-        <Fab onClick={() => console.log('create new budget')}>
+        <Fab onClick={openCreateBudgetModal}>
             <LaunchIcon />
         </Fab>
     );
@@ -64,6 +73,7 @@ const BudtgetTemplate = observer(() => {
             }
             <AddFooter onAdd={openModal} right={createNewMonthBudget} />
             {modal}
+            {createBudgetModal}
         </div>
     );
 });
