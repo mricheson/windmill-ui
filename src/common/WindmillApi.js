@@ -71,3 +71,7 @@ export function createBudget(year, month) {
 export function getBudgets() {
     return get(`/api/budgets/`);
 }
+
+export function getMonthBudgetCategories(year, month) {
+    return get(`/api/budgets/${year}/${month}/categories`);
+}
