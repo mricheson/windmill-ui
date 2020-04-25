@@ -15,7 +15,7 @@ class Account {
     }
 
     populate = account => {
-        this.id = account.id || '';
+        this.id = account.id;
         this.name = account.account || '';
         this.type = account.accountType || {};
         this.isActive = Boolean(account.activeIndicator);

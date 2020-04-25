@@ -13,7 +13,7 @@ class BudgetGroup {
     }
 
     populate = budgetGroup => {
-        this.id = budgetGroup.id || '';
+        this.id = budgetGroup.id;
         this.name = budgetGroup.name || '';
         this.position = budgetGroup.position || 0;
         this.isSavings = Boolean(budgetGroup.savingsIndicator);

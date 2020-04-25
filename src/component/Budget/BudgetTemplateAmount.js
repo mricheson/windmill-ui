@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Select, TextField, MenuItem, IconButton, makeStyles } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
@@ -73,7 +73,7 @@ const BudgetTemplateAmount = observer(({ budgetTemplate }) => {
     const canSave = editedCategory && editedCategory !== '' && canClear;
 
     const clear = () => {
-        setEditedCategory(budgetTemplate.category.id || '');
+        setEditedCategory(budgetTemplate.category.id == null ? '' : budgetTemplate.category.id);
         setEditedName(budgetTemplate.name);
         setEditedAmount(budgetTemplate.amount);
     };
@@ -84,6 +84,9 @@ const BudgetTemplateAmount = observer(({ budgetTemplate }) => {
             name: editedName,
             amount: editedAmount,
             category: budgetCategoryStore.budgetCategories.find(category => category.id === editedCategory)
+        })
+        .then(() => {
+            budgetTemplateStore.load();
         });
     };
 

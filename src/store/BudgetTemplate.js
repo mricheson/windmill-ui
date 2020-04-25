@@ -14,7 +14,7 @@ class BudgetTemplate {
     }
 
     populate = budgetTemplate => {
-        this.id = budgetTemplate.id || '';
+        this.id = budgetTemplate.id;
         this.name = budgetTemplate.description || '';
         this.amount = budgetTemplate.amount || 0.0;
         this.category = budgetTemplate.budgetCategory || {};
@@ -47,6 +47,7 @@ class BudgetTemplate {
         return saveBudgetTemplate(budgetTemplateToSave)
             .then(response => {
                 this.populate(response.data);
+                return this;
             })
             .catch(e => {
                 console.log(e);

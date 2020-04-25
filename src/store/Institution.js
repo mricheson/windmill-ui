@@ -13,7 +13,7 @@ class Institution {
     }
 
     populate = institution => {
-        this.id = institution.id || '';
+        this.id = institution.id;
         if(this.name !== institution.name){
             this.logo = '';
         }
