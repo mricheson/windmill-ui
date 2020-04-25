@@ -2,7 +2,6 @@ import { decorate, observable, action } from 'mobx';
 import { createContext } from 'react';
 import { getTransactions, getTransactionForBudget } from '../common/WindmillApi';
 import { rootStore } from './RootStore';
-import Institution from './Institution';
 
 class TransactionStore {
     transactions = [];
