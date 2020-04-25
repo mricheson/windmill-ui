@@ -75,3 +75,11 @@ export function getBudgets() {
 export function getMonthBudgetCategories(year, month) {
     return get(`/api/budgets/${year}/${month}/categories`);
 }
+
+export function getTransactions() {
+    return get(`/api/transactions`);
+}
+
+export function getTransactionForBudget(year, month) {
+    return get(`/api/transactions/${year}/${month}`);
+}
