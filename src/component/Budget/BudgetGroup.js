@@ -117,7 +117,7 @@ const BudgetGroup = observer(({ budgetGroup }) => {
                                 : <div
                                     className={clsx(totalAmount > 0 ? classes.income : null, totalAmount < 0 ? classes.expense : null)}
                                 >
-                                    ${totalAmount.toFixed(2)}
+                                    ${Math.abs(totalAmount.toFixed(2))}
                                 </div>
                             }
                         </div>
