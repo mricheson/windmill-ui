@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { makeStyles } from '@material-ui/core';
 import { RootStoreContext } from '../../store/RootStore';
 import { BudgetStoreContext } from '../../store/BudgetStore';
+import Budget from './Budget';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,7 +34,7 @@ const BudgetList = observer(({ open = false }) => {
                 budgetStore.budgets
                     .filter(budget => budget.reconciledIndicator !== open)
                     .sort((a, b) => new Date(b.date) - new Date(a.date))
-                    .map(budget => <div>{budget.date}</div>)
+                    .map(budget => <Budget budget={budget} />)
             }
         </div>
     );
