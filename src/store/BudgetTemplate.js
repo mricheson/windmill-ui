@@ -19,8 +19,8 @@ class BudgetTemplate {
         this.id = budgetTemplate.id;
         this.name = budgetTemplate.description || '';
         this.amount = budgetTemplate.amount || 0.0;
-        this.category = new BudgetCategory(budgetTemplate.budgetCategory);
-        this.group = budgetTemplate.group || this.category.group || new BudgetGroup();
+        this.category = new BudgetCategory(budgetTemplate.budgetCategory || undefined);
+        this.group = new BudgetGroup(budgetTemplate.group || this.category.group || undefined);
     }
 
     savableObject = root => {

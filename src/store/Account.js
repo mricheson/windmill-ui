@@ -11,7 +11,7 @@ class Account {
     institution = {}
 
     constructor(newAccount = {}) {
-        this.populate(newAccount || {});
+        this.populate(newAccount);
     }
 
     populate = account => {
@@ -19,7 +19,7 @@ class Account {
         this.name = account.account || '';
         this.type = account.accountType || {};
         this.isActive = Boolean(account.activeIndicator);
-        this.institution = new Institution(account.institution);
+        this.institution = new Institution(account.institution || undefined);
     }
 
     savableObject = root => {

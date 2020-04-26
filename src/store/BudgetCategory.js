@@ -19,8 +19,8 @@ class BudgetCategory {
         this.name = category.name || '';
         this.position = category.position;
         this.isUtility = Boolean(category.utilityIndicator);
-        this.group = new BudgetGroup(category.budgetGroup);
-        this.savingsAccount = new Account(category.savingsAccount);
+        this.group = new BudgetGroup(category.budgetGroup || undefined);
+        this.savingsAccount = new Account(category.savingsAccount || undefined);
     }
 }
 

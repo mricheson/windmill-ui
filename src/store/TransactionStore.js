@@ -2,6 +2,7 @@ import { decorate, observable, action } from 'mobx';
 import { createContext } from 'react';
 import { getTransactions, getTransactionForBudget } from '../common/WindmillApi';
 import { rootStore } from './RootStore';
+import Transaction from './Transaction';
 
 class TransactionStore {
     transactions = [];
@@ -12,7 +13,7 @@ class TransactionStore {
         rootStore.startLoading('transactions');
         return loader(year, month)
             .then(response => {
-                this.transactions = response.data;
+                this.transactions = response.data.map(transaction => new Transaction(transaction));
             })
             .catch(e => {
                 console.log(e);
