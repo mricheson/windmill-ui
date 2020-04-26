@@ -10,6 +10,8 @@ import moment from 'moment';
 import { RootStoreContext } from '../../store/RootStore';
 import AddFooter from '../../common/component/AddFooter';
 import TransactionModal from './TransactionModal';
+import Transaction from '../../store/Transaction';
+import { BudgetStoreContext } from '../../store/BudgetStore';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -45,15 +47,22 @@ const TransactionsForBudget = observer(() => {
     const classes = useStyles();
     const { month, year } = useParams();
     const transactionStore = useContext(TransactionStoreContext);
+    const budgetStore = useContext(BudgetStoreContext);
     const rootStore = useContext(RootStoreContext);
     const [addModal, setAddModal] = useState(null);
+    const [budget, setBudget] = useState(null);
 
     useEffect(() => {
         transactionStore.load(year, month);
     }, [transactionStore, month, year]);
 
+    useEffect(() => {
+        budgetStore.get(year, month)
+            .then(setBudget);
+    }, [year, month]);
+
     const openAddModal = () => setAddModal(
-        <TransactionModal transaction={{}} onClose={() => setAddModal(null)} onSave={transaction => transactionStore.transactions.push(transaction)} mode="add" />
+        <TransactionModal transaction={new Transaction({ budget })} onClose={() => setAddModal(null)} onSave={transaction => transactionStore.transactions.push(transaction)} mode="add" />
     );
 
     if (rootStore.loading.has('transactions')) {

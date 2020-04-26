@@ -68,6 +68,10 @@ export function createBudget(year, month) {
     return post(`/api/budgets/${year}/${month}`, {});
 }
 
+export function getBudget(year, month) {
+    return get(`/api/budgets/${year}/${month}`, {});
+}
+
 export function getBudgets() {
     return get(`/api/budgets/`);
 }

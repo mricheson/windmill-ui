@@ -1,6 +1,6 @@
 import { decorate, observable, action } from 'mobx';
 import { createContext } from 'react';
-import { getBudgets, createBudget } from '../common/WindmillApi';
+import { getBudgets, getBudget, createBudget } from '../common/WindmillApi';
 import { rootStore } from './RootStore';
 import Budget from './Budget';
 
@@ -29,6 +29,18 @@ class BudgetStore {
             })
             .finally(() => {
                 rootStore.stopLoading('createBudget');
+            });
+    }
+
+    get = (year, month) => {
+        rootStore.startLoading('getBudget');
+        return getBudget(year, month)
+            .then(response => new Budget(response.data))
+            .catch(e => {
+                console.log(e);
+            })
+            .finally(() => {
+                rootStore.stopLoading('getBudget');
             });
     }
 }
