@@ -14,6 +14,7 @@ import { AccountStoreContext } from '../../store/AccountStore';
 import { BudgetCategoryStoreContext } from '../../store/BudgetCategoryStore';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import BackupIcon from '@material-ui/icons/Backup';
+import UploadModal from './UploadModal';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -44,6 +45,7 @@ const Transactions = observer(() => {
     const rootStore = useContext(RootStoreContext);
     const [addModal, setAddModal] = useState(null);
     const [editModal, setEditModal] = useState(null);
+    const [uploadModal, setUploadModal] = useState(null);
 
     useEffect(() => {
         transactionStore.load();
@@ -63,6 +65,10 @@ const Transactions = observer(() => {
 
     const openEditModal = transaction => setEditModal(
         <TransactionModal transaction={transaction} onClose={() => setEditModal(null)} />
+    );
+
+    const openUploadModal = transaction => setUploadModal(
+        <UploadModal onClose={() => setUploadModal(null)} onSave={transactionStore.load} />
     );
 
     if (rootStore.loading.has('transactions')) {
@@ -118,13 +124,14 @@ const Transactions = observer(() => {
             <AddFooter
                 onAdd={openAddModal}
                 right={
-                    <Fab color="default" onClick={()=>{console.log('upload')}}>
+                    <Fab color="default" onClick={openUploadModal}>
                         <BackupIcon />
                     </Fab>
                 }
             />
             {addModal}
             {editModal}
+            {uploadModal}
         </div >
     );
 });
