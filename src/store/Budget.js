@@ -22,7 +22,7 @@ class Budget {
 
     loadCategories = () => {
         const date = new Date(this.date);
-        rootStore.startLoading('budgetCategories');
+        rootStore.startLoading('monthBudgetCategories');
 
         return getMonthBudgetCategories(date.getFullYear(), date.getMonth() + 1)
             .then(response => {
@@ -32,7 +32,7 @@ class Budget {
                 console.log(e);
             })
             .finally(() => {
-                rootStore.stopLoading('budgetCategories');
+                rootStore.stopLoading('monthBudgetCategories');
             });
     }
 }

@@ -107,7 +107,7 @@ const BudgetModal = observer(({ budget, onClose }) => {
                     </IconButton>
                 </Toolbar>
             </AppBar>
-            {rootStore.loading.has('budgetCategories')
+            {rootStore.loading.has('monthBudgetCategories')
                 ? <CircularProgress />
                 : < List >
                     {renderedGroups}
