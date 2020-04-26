@@ -31,9 +31,9 @@ class Transaction {
         this.postDate = transaction.postDate || '';
         this.account = new Account(transaction.account || undefined);
         this.description = transaction.description || '';
-        this.amount = transaction.description || '';
+        this.amount = transaction.amount || '';
         this.isReimbursable = Boolean(transaction.reimbursable);
-        this.isReimbursement = Boolean(transaction.reinbursement);
+        this.isReimbursement = Boolean(transaction.reimbursement);
         this.isPayment = Boolean(transaction.payment);
         this.isSplit = Boolean(transaction.split);
         this.comment = transaction.comment || '';

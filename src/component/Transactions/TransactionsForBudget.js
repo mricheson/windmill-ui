@@ -21,15 +21,15 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const getType = transaction => {
-    if (transaction.payment) {
+    if (transaction.isPayment) {
         return 'payment';
     }
 
-    if (transaction.reimbursable) {
+    if (transaction.isReimbursable) {
         return 'reimbursable';
     }
 
-    if (transaction.reimbursement) {
+    if (transaction.isReimbursement) {
         return 'reimbursement';
     }
 
@@ -80,11 +80,11 @@ const TransactionsForBudget = observer(() => {
                     <TableBody>
                         {transactionStore.transactions.slice().sort((a, b) => new Date(a.transactionDate) - new Date(b.transactionDate)).map(transaction => (
                             <TableRow key={transaction.id}>
-                                <TableCell>{transaction.account.institution.name}<br />{transaction.account.account}</TableCell>
+                                <TableCell>{transaction.account.institution.name}<br />{transaction.account.name}</TableCell>
                                 <TableCell>{moment(transaction.transactionDate).format('M/D/YY')}</TableCell>
                                 <TableCell>{transaction.description}</TableCell>
                                 <TableCell align="right">{formatter.format(transaction.amount)}</TableCell>
-                                <TableCell>{transaction.budgetCategory ? (<>{transaction.budgetCategory.budgetGroup.name}<br />{transaction.budgetCategory.name}</>) : ''}</TableCell>
+                                <TableCell>{transaction.category ? (<>{transaction.category.group.name}<br />{transaction.category.name}</>) : ''}</TableCell>
                                 <TableCell>{transaction.comment}</TableCell>
                                 <TableCell><TransactionIcon type={getType(transaction)} /></TableCell>
                                 <TableCell><EditIcon color="disabled" /></TableCell>
