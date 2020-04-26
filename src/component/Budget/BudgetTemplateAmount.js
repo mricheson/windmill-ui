@@ -1,32 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Select, TextField, MenuItem, IconButton, makeStyles } from '@material-ui/core';
-import NumberFormat from 'react-number-format';
 import { BudgetCategoryStoreContext } from '../../store/BudgetCategoryStore';
 import ClearIcon from '@material-ui/icons/Clear';
 import CheckIcon from '@material-ui/icons/Check';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { BudgetTemplateStoreContext } from '../../store/BudgetTemplateStore';
-
-const NumberFormatCustom = ({ name, inputRef, onChange, ...other }) => (
-    <NumberFormat
-        {...other}
-        getInputRef={inputRef}
-        onValueChange={(values) => {
-            onChange({
-                target: {
-                    name,
-                    value: values.value,
-                },
-            });
-        }}
-        thousandSeparator
-        isNumericString
-        prefix="$"
-        decimalScale={2}
-        fixedDecimalScale
-    />
-);
+import { CurrencyFormat } from '../../common/component/Currency';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -115,7 +95,7 @@ const BudgetTemplateAmount = observer(({ budgetTemplate }) => {
                     onChange={onAmountChange}
                     name="amount"
                     InputProps={{
-                        inputComponent: NumberFormatCustom,
+                        inputComponent: CurrencyFormat,
                         className: classes.amount
                     }}
                     className={classes.amountColumn}
