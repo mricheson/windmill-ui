@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { TransactionStoreContext } from '../../store/TransactionStore';
-import { TableContainer, Table, makeStyles, TableHead, TableRow, TableCell, TableBody, CircularProgress, IconButton } from '@material-ui/core';
+import { TableContainer, Table, makeStyles, TableHead, TableRow, TableCell, TableBody, CircularProgress, IconButton, TextField, Tooltip } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import { observer } from 'mobx-react-lite';
 import TransactionIcon from './TransactionIcon';
@@ -13,13 +13,28 @@ import TransactionModal from './TransactionModal';
 import Transaction from '../../store/Transaction';
 import { BudgetStoreContext } from '../../store/BudgetStore';
 import { AccountStoreContext } from '../../store/AccountStore';
+import { BudgetCategoryStoreContext } from '../../store/BudgetCategoryStore';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import MessageIcon from '@material-ui/icons/Message';
 
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
         flexDirection: 'column',
         width: theme.breakpoints.values.lg,
-        alignItems: 'center'
+        alignItems: 'center',
+    },
+    icons: {
+        display: 'flex',
+        justifyContent: 'flex-end'
+    },
+    infoIcons: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center'
+    },
+    category: {
+        width: 250
     }
 }))
 
@@ -49,6 +64,7 @@ const TransactionsForBudget = observer(() => {
     const { month, year } = useParams();
     const transactionStore = useContext(TransactionStoreContext);
     const budgetStore = useContext(BudgetStoreContext);
+    const categoryStore = useContext(BudgetCategoryStoreContext);
     const accountStore = useContext(AccountStoreContext);
     const rootStore = useContext(RootStoreContext);
     const [addModal, setAddModal] = useState(null);
@@ -95,22 +111,36 @@ const TransactionsForBudget = observer(() => {
                             <TableCell>Description</TableCell>
                             <TableCell>Amount</TableCell>
                             <TableCell>Category</TableCell>
-                            <TableCell>Comment</TableCell>
-                            <TableCell></TableCell>
                             <TableCell></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {transactionStore.transactions.slice().sort((a, b) => new Date(a.transactionDate) - new Date(b.transactionDate)).map(transaction => (
+                        {transactionStore.transactions.slice().sort((a, b) => (moment(a.transactionDate).isValid() && moment(b.transactionDate).isValid()) ? moment(a.transactionDate) - moment(b.transactionDate) : -1).map(transaction => (
                             <TableRow key={transaction.id}>
                                 <TableCell>{transaction.account.institution.name}<br />{transaction.account.name}</TableCell>
                                 <TableCell>{moment(transaction.transactionDate).format('M/D/YY')}</TableCell>
                                 <TableCell>{transaction.description}</TableCell>
                                 <TableCell align="right">{formatter.format(transaction.amount)}</TableCell>
-                                <TableCell>{transaction.category ? (<>{transaction.category.group.name}<br />{transaction.category.name}</>) : ''}</TableCell>
-                                <TableCell>{transaction.comment}</TableCell>
-                                <TableCell><TransactionIcon type={getType(transaction)} /></TableCell>
-                                <TableCell><IconButton onClick={() => openEditModal(transaction)}><EditIcon color="disabled" /></IconButton></TableCell>
+                                <TableCell className={classes.category}>
+                                    <Autocomplete
+                                        options={categoryStore.budgetCategories}
+                                        getOptionLabel={category => category.id != null && `${category.name} (${category.group.name})` || ''}
+                                        renderInput={(params) => <TextField {...params} />}
+                                        value={transaction.category}
+                                        onChange={(event, newValue) => transaction.category = newValue}
+                                    />
+                                </TableCell>
+                                <TableCell>
+                                    <div className={classes.icons}>
+                                        <div className={classes.infoIcons}>
+                                            {transaction.comment != '' && <Tooltip title={transaction.comment}><MessageIcon /></Tooltip>}
+                                            <TransactionIcon type={getType(transaction)} />{transaction.isPending && <TransactionIcon type={'pending'} />}
+                                        </div>
+                                        <IconButton onClick={() => openEditModal(transaction)}>
+                                            <EditIcon color="disabled" />
+                                        </IconButton>
+                                    </div>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
