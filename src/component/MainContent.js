@@ -12,6 +12,7 @@ import OAuth2RedirectHandler from './Security/OAuth2RedirectHandler';
 import { RootStoreContext } from '../store/RootStore';
 import { AccountTypeStoreContext } from '../store/AccountTypeStore';
 import { BudgetCategoryStoreContext } from '../store/BudgetCategoryStore';
+import TransactionsForBudget from './Transactions/TransactionsForBudget';
 
 const useStyles = makeStyles(theme => ({
     offset: theme.mixins.toolbar,
@@ -56,7 +57,7 @@ const MainContent = observer(() => {
                         <Transactions />
                     </PrivateRoute>
                     <PrivateRoute exact path="/transactions/:year/:month">
-                        <Transactions />
+                        <TransactionsForBudget />
                     </PrivateRoute>
                     <PrivateRoute exact path="/budgets/open">
                         <BudgetList open />
