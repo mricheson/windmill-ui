@@ -35,6 +35,10 @@ const useStyles = makeStyles(theme => ({
     },
     category: {
         width: 250
+    },
+    categorySaving: {
+        display: 'flex',
+        justifyContent: 'center'
     }
 }))
 
@@ -118,17 +122,23 @@ const TransactionsForBudget = observer(() => {
                         {transactionStore.transactions.slice().sort((a, b) => (moment(a.transactionDate).isValid() && moment(b.transactionDate).isValid()) ? moment(a.transactionDate) - moment(b.transactionDate) : -1).map(transaction => (
                             <TableRow key={transaction.id}>
                                 <TableCell>{transaction.account.institution.name}<br />{transaction.account.name}</TableCell>
-                                <TableCell>{moment(transaction.transactionDate).format('M/D/YY')}</TableCell>
+                                <TableCell>{moment(transaction.transactionDate).isValid() ? moment(transaction.transactionDate).format('M/D/YY') : ''}</TableCell>
                                 <TableCell>{transaction.description}</TableCell>
                                 <TableCell align="right">{formatter.format(transaction.amount)}</TableCell>
                                 <TableCell className={classes.category}>
-                                    <Autocomplete
-                                        options={categoryStore.budgetCategories}
-                                        getOptionLabel={category => category.id != null && `${category.name} (${category.group.name})` || ''}
-                                        renderInput={(params) => <TextField {...params} />}
-                                        value={transaction.category}
-                                        onChange={(event, newValue) => transaction.category = newValue}
-                                    />
+                                    {
+                                        rootStore.loading.has(`transaction[${transaction.id}]`)
+                                            ? <div className={classes.categorySaving}><CircularProgress size={32} /></div>
+                                            :
+                                            <Autocomplete
+                                                options={categoryStore.budgetCategories}
+                                                getOptionLabel={category => (category.id !== '' && `${category.name} (${category.group.name})`) || ''}
+                                                getOptionSelected={(option, value) => value.id != null && option.id === value.id}
+                                                renderInput={(params) => <TextField {...params} />}
+                                                value={transaction.category}
+                                                onChange={(event, newValue) => transaction.save({ category: newValue })}
+                                            />
+                                    }
                                 </TableCell>
                                 <TableCell>
                                     <div className={classes.icons}>
