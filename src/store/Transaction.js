@@ -27,7 +27,7 @@ class Transaction {
     }
 
     populate = transaction => {
-        this.id = transaction.id;
+        this.id = transaction.id || '';
         this.transactionDate = transaction.transactionDate || '';
         this.postDate = transaction.postDate || '';
         this.account = new Account(transaction.account || undefined);
@@ -50,36 +50,67 @@ class Transaction {
         if (root.id !== undefined) {
             result.id = root.id;
         }
-        if (root.name !== undefined) {
-            result.account = root.name;
+        if (root.transactionDate !== undefined) {
+            result.transactionDate = root.transactionDate;
         }
-        if (root.type !== undefined) {
-            result.accountType = root.type;
+        if (root.postDate !== undefined) {
+            result.postDate = root.postDate;
         }
-        if (root.institution !== undefined) {
-            result.institution = root.institution;
+        if (root.account !== undefined) {
+            result.account = root.account;
         }
-        if (root.isActive !== undefined) {
-            result.activeIndicator = root.isActive;
+        if (root.description !== undefined) {
+            result.description = root.description;
+        }
+        if (root.amount !== undefined) {
+            result.amount = root.amount;
+        }
+        if (root.isReimbursable !== undefined) {
+            result.reimbursable = root.isReimbursable;
+        }
+        if (root.isReimbursement !== undefined) {
+            result.reimbursement = root.isReimbursement;
+        }
+        if (root.isPayment !== undefined) {
+            result.payment = root.isPayment;
+        }
+        if (root.isPending !== undefined) {
+            result.pending = root.isPending;
+        }
+        if (root.isSplit !== undefined) {
+            result.split = root.isSplit;
+        }
+        if (root.comment !== undefined) {
+            result.comment = root.comment;
+        }
+        if (root.budget !== undefined) {
+            result.monthBudget = root.budget;
+        }
+        if (root.category !== undefined) {
+            result.budgetCategory = root.category;
+        }
+        if (root.parent !== undefined) {
+            result.parent = root.parent;
         }
 
         return result;
     };
 
-    save = changes => {
-        const accountToSave = { ...this.savableObject(this), ...this.savableObject(changes) };
-
-        // rootStore.startLoading('account');
-        // return saveAccount(accountToSave)
-        //     .then(response => {
-        //         this.populate(response.data);
-        //     })
-        //     .catch(e => {
-        //         console.log(e);
-        //     })
-        //     .finally(() => {
-        //         rootStore.stopLoading('account');
-        //     });
+    save = (changes = {}) => {
+        const transactionToSave = { ...this.savableObject(this), ...this.savableObject(changes) };
+        const id = this.id;
+        rootStore.startLoading(`transaction[${id}]`);
+        return saveTransaction(transactionToSave)
+            .then(response => {
+                this.populate(response.data);
+                return this;
+            })
+            .catch(e => {
+                console.log(e);
+            })
+            .finally(() => {
+                rootStore.stopLoading(`transaction[${id}]`);
+            });
     }
 }
 

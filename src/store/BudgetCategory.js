@@ -15,7 +15,7 @@ class BudgetCategory {
     }
 
     populate = category => {
-        this.id = category.id;
+        this.id = category.id || '';
         this.name = category.name || '';
         this.position = category.position;
         this.isUtility = Boolean(category.utilityIndicator);

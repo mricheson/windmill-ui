@@ -87,3 +87,9 @@ export function getTransactions() {
 export function getTransactionForBudget(year, month) {
     return get(`/api/transactions/${year}/${month}`);
 }
+
+export function saveTransaction(transaction) {
+    return transaction.id
+        ? put(`/api/transactions/${transaction.id}`, transaction)
+        : post('/api/transactions', transaction);
+}
