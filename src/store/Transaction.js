@@ -99,11 +99,11 @@ class Transaction {
     save = (changes = {}) => {
         const transactionToSave = { ...this.savableObject(this), ...this.savableObject(changes) };
 
-        if(transactionToSave.monthBudget.id === ''){
+        if(!transactionToSave.monthBudget || transactionToSave.monthBudget.id == null){
             transactionToSave.monthBudget = undefined;
         }
 
-        if(transactionToSave.budgetCategory.id === ''){
+        if(!transactionToSave.budgetCategory || transactionToSave.budgetCategory.id == null){
             transactionToSave.budgetCategory = undefined;
         }
 
