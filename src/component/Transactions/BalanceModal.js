@@ -9,13 +9,10 @@ const useStyle = makeStyles(theme => ({
     root: {
         width: theme.breakpoints.values.sm
     },
-    formControl: {
-        margin: [[theme.spacing(1), 0, theme.spacing(1), 0]],
-    },
-    income: {
+    positive: {
         color: green[900]
     },
-    expense: {
+    negative: {
         color: red[900]
     },
     balance: {
@@ -34,7 +31,7 @@ const formatter = new Intl.NumberFormat('en-US', {
     currency: 'USD',
 });
 
-const BalanceModal = ({ onSave, canSave = true, onClose, isSaving, title, mode = "edit", children }) => {
+const BalanceModal = ({ onClose }) => {
     const theme = useTheme();
     const classes = useStyle();
 
@@ -66,7 +63,7 @@ const BalanceModal = ({ onSave, canSave = true, onClose, isSaving, title, mode =
                         Object.values(balances).map(accountBalance => (
                             <ListItem>
                                 <ListItemText primary={accountBalance.account.name} secondary={accountBalance.account.institution.name} />
-                                <ListItemText primary={formatter.format(Math.abs(accountBalance.balance))} className={clsx(classes.balance, accountBalance.balance.toFixed(2) > 0 ? classes.income : null, accountBalance.balance.toFixed(2) < 0 ? classes.expense : null)} />
+                                <ListItemText primary={formatter.format(Math.abs(accountBalance.balance))} className={clsx(classes.balance, accountBalance.balance.toFixed(2) > 0 ? classes.positive : null, accountBalance.balance.toFixed(2) < 0 ? classes.negative : null)} />
                             </ListItem>
                         ))
                     }
