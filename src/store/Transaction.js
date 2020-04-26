@@ -16,7 +16,8 @@ class Transaction {
     isReimbursement = false;
     isPayment = false;
     isSplit = false;
-    comment ='';
+    isPending = false;
+    comment = '';
     budget = {};
     category = {};
     parent;
@@ -35,9 +36,10 @@ class Transaction {
         this.isReimbursable = Boolean(transaction.reimbursable);
         this.isReimbursement = Boolean(transaction.reimbursement);
         this.isPayment = Boolean(transaction.payment);
+        this.isPending = Boolean(transaction.pending);
         this.isSplit = Boolean(transaction.split);
         this.comment = transaction.comment || '';
-        this.budget = new Budget(transaction.monthBudget || undefined);
+        this.budget = new Budget(transaction.budget || transaction.monthBudget || undefined);
         this.category = new BudgetCatetory(transaction.budgetCategory || undefined);
         this.parent = transaction.parent;
     }
@@ -91,6 +93,7 @@ decorate(Transaction, {
     isReimbursable: observable,
     isReimbursement: observable,
     isPayment: observable,
+    isPendingt: observable,
     isSplit: observable,
     comment: observable,
     budget: observable,

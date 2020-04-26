@@ -12,6 +12,7 @@ import AddFooter from '../../common/component/AddFooter';
 import TransactionModal from './TransactionModal';
 import Transaction from '../../store/Transaction';
 import { BudgetStoreContext } from '../../store/BudgetStore';
+import { AccountStoreContext } from '../../store/AccountStore';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -48,6 +49,7 @@ const TransactionsForBudget = observer(() => {
     const { month, year } = useParams();
     const transactionStore = useContext(TransactionStoreContext);
     const budgetStore = useContext(BudgetStoreContext);
+    const accountStore = useContext(AccountStoreContext);
     const rootStore = useContext(RootStoreContext);
     const [addModal, setAddModal] = useState(null);
     const [budget, setBudget] = useState(null);
@@ -55,6 +57,13 @@ const TransactionsForBudget = observer(() => {
     useEffect(() => {
         transactionStore.load(year, month);
     }, [transactionStore, month, year]);
+
+    useEffect(() => {
+        Promise.all([
+            budgetStore.load(),
+            accountStore.load()
+        ]);
+    }, [budgetStore, accountStore])
 
     useEffect(() => {
         budgetStore.get(year, month)
