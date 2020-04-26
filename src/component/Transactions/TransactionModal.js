@@ -77,12 +77,25 @@ const TransactionModal = observer(({ transaction, onClose, onSave = () => { }, m
     const onIsPendingChange = event => setEditedIsPending(event.target.checked);
 
     const save = () => {
-        // transaction.save({ name: editedName })
-        //     .then(() => onSave(transaction))
-        //     .then(onClose);
+        transaction.save({ 
+            budget: editedBudget,
+            account: editedAccount,
+            transactionDate: editedTransactionDate,
+            postDate: editedPostDate,
+            description: editedDescription,
+            amount: editedAmount,
+            category: editedCategory,
+            comment: editedComment,
+            isReimbursable: editedIsReimbursable,
+            isReimbursement: editedIsReimbursement,
+            isPending: editedIsPending,
+            isPayment: editedIsPayment,
+         })
+            .then(() => onSave(transaction))
+            .then(onClose);
     }
 
-    const isSaving = rootStore.loading.has('transaction');
+    const isSaving = rootStore.loading.has(`transaction[${transaction.id}]`);
 
     return (
         <EditModal
@@ -99,6 +112,8 @@ const TransactionModal = observer(({ transaction, onClose, onSave = () => { }, m
                     renderInput={(params) => <TextField {...params} label="Budget" />}
                     value={editedBudget}
                     onChange={onBudgetChange}
+                    disabled={isSaving}
+                    getOptionSelected={(option, value) => option.id === value.id}
                 />
                 <Autocomplete
                     options={accountStore.accounts}
@@ -106,6 +121,8 @@ const TransactionModal = observer(({ transaction, onClose, onSave = () => { }, m
                     renderInput={(params) => <TextField {...params} label="Account" />}
                     value={editedAccount}
                     onChange={onAccountChange}
+                    disabled={isSaving}
+                    getOptionSelected={(option, value) => option.id === value.id}
                 />
             </div>
             <div className={classes.split}>
@@ -116,6 +133,7 @@ const TransactionModal = observer(({ transaction, onClose, onSave = () => { }, m
                     inputValue={editedTransactionDate}
                     onChange={onTranactionDateChange}
                     format="YYYY-MM-DD"
+                    disabled={isSaving}
                 />
                 <KeyboardDatePicker
                     clearable
@@ -124,6 +142,7 @@ const TransactionModal = observer(({ transaction, onClose, onSave = () => { }, m
                     inputValue={editedPostDate}
                     onChange={onPostDateChange}
                     format="YYYY-MM-DD"
+                    disabled={isSaving}
                 />
             </div>
             <TextField
@@ -143,13 +162,16 @@ const TransactionModal = observer(({ transaction, onClose, onSave = () => { }, m
                         inputComponent: CurrencyFormat,
                         className: classes.amount
                     }}
+                    disabled={isSaving}
                 />
                 <Autocomplete
                     options={categoryStore.budgetCategories}
-                    getOptionLabel={category => category.id != null && `${category.name} (${category.group.name})` || ''}
+                    getOptionLabel={category => category.id !=='' && `${category.name} (${category.group.name})` || ''}
                     renderInput={(params) => <TextField {...params} label="Category" />}
                     value={editedCategory}
                     onChange={onCategoryChange}
+                    disabled={isSaving}
+                    getOptionSelected={(option, value) => option.id === value.id}
                 />
             </div>
             <TextField
