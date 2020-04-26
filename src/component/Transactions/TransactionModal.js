@@ -47,7 +47,7 @@ const TransactionModal = observer(({ transaction, onClose, onSave = () => { }, m
     const [editedDescription, setEditedDescription] = useState(transaction.description);
     const [editedAmount, setEditedAmount] = useState(transaction.amount);
     const [editedCategory, setEditedCategory] = useState(transaction.category);
-    const [editedComment, setEditedComment] = useState(transaction.amount);
+    const [editedComment, setEditedComment] = useState(transaction.comment);
     const [editedIsReimbursable, setEditedIsReimbursable] = useState(transaction.isReimbursable);
     const [editedIsReimbursement, setEditedIsReimbursement] = useState(transaction.isReimbursement);
     const [editedIsPending, setEditedIsPending] = useState(transaction.isPending);
@@ -115,7 +115,7 @@ const TransactionModal = observer(({ transaction, onClose, onSave = () => { }, m
                     value={null}
                     inputValue={editedTransactionDate}
                     onChange={onTranactionDateChange}
-                    format="MM/DD/YYYY"
+                    format="YYYY-MM-DD"
                 />
                 <KeyboardDatePicker
                     clearable
@@ -123,7 +123,7 @@ const TransactionModal = observer(({ transaction, onClose, onSave = () => { }, m
                     value={null}
                     inputValue={editedPostDate}
                     onChange={onPostDateChange}
-                    format="MM/DD/YYYY"
+                    format="YYYY-MM-DD"
                 />
             </div>
             <TextField

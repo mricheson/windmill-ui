@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { TransactionStoreContext } from '../../store/TransactionStore';
-import { TableContainer, Table, makeStyles, TableHead, TableRow, TableCell, TableBody, CircularProgress } from '@material-ui/core';
+import { TableContainer, Table, makeStyles, TableHead, TableRow, TableCell, TableBody, CircularProgress, IconButton } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import { observer } from 'mobx-react-lite';
 import TransactionIcon from './TransactionIcon';
@@ -52,6 +52,7 @@ const TransactionsForBudget = observer(() => {
     const accountStore = useContext(AccountStoreContext);
     const rootStore = useContext(RootStoreContext);
     const [addModal, setAddModal] = useState(null);
+    const [editModal, setEditModal] = useState(null);
     const [budget, setBudget] = useState(null);
 
     useEffect(() => {
@@ -72,6 +73,10 @@ const TransactionsForBudget = observer(() => {
 
     const openAddModal = () => setAddModal(
         <TransactionModal transaction={new Transaction({ budget })} onClose={() => setAddModal(null)} onSave={transaction => transactionStore.transactions.push(transaction)} mode="add" />
+    );
+
+    const openEditModal = transaction => setEditModal(
+        <TransactionModal transaction={transaction} onClose={() => setEditModal(null)} />
     );
 
     if (rootStore.loading.has('transactions')) {
@@ -105,7 +110,7 @@ const TransactionsForBudget = observer(() => {
                                 <TableCell>{transaction.category ? (<>{transaction.category.group.name}<br />{transaction.category.name}</>) : ''}</TableCell>
                                 <TableCell>{transaction.comment}</TableCell>
                                 <TableCell><TransactionIcon type={getType(transaction)} /></TableCell>
-                                <TableCell><EditIcon color="disabled" /></TableCell>
+                                <TableCell><IconButton onClick={() => openEditModal(transaction)}><EditIcon color="disabled" /></IconButton></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
@@ -113,6 +118,7 @@ const TransactionsForBudget = observer(() => {
             </TableContainer>
             <AddFooter onAdd={openAddModal} />
             {addModal}
+            {editModal}
         </div >
     );
 });
