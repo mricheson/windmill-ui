@@ -11,7 +11,7 @@ class Account {
     institution = {}
 
     constructor(newAccount = {}) {
-        this.populate(newAccount);
+        this.populate(newAccount || {});
     }
 
     populate = account => {

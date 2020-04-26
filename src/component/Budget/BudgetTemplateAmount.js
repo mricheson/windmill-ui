@@ -105,7 +105,7 @@ const BudgetTemplateAmount = observer(({ budgetTemplate }) => {
                     autoWidth
                 >
                     {budgetCategoryStore.budgetCategories
-                        .filter(category => category.budgetGroup.id === budgetTemplate.group.id)
+                        .filter(category => category.group.id === budgetTemplate.group.id)
                         .map(category => <MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>)}
                 </Select>
                 <TextField value={editedName} onChange={onNameChange}

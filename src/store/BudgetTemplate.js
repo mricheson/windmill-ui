@@ -1,6 +1,8 @@
 import { decorate, observable, action } from 'mobx';
 import { saveBudgetTemplate } from '../common/WindmillApi';
 import { rootStore } from './RootStore';
+import BudgetCategory from './BudgetCategory';
+import BudgetGroup from './BudgetGroup';
 
 class BudgetTemplate {
     name = '';
@@ -17,8 +19,8 @@ class BudgetTemplate {
         this.id = budgetTemplate.id;
         this.name = budgetTemplate.description || '';
         this.amount = budgetTemplate.amount || 0.0;
-        this.category = budgetTemplate.budgetCategory || {};
-        this.group = this.category.budgetGroup || budgetTemplate.group || {};
+        this.category = new BudgetCategory(budgetTemplate.budgetCategory);
+        this.group = budgetTemplate.group || this.category.group || new BudgetGroup();
     }
 
     savableObject = root => {
