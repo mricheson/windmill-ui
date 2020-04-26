@@ -14,17 +14,8 @@ class Institution {
 
     populate = institution => {
         this.id = institution.id;
-        if(this.name !== institution.name){
-            this.logo = '';
-        }
+        this.logo = '';
         this.name = institution.name || '';
-
-        axios.get(`https://favicongrabber.com/api/grab/${this.name}.com`)
-            .then(response => {
-                if (response.status === 200 && response.data && response.data.icons && response.data.icons.length > 0) {
-                    this.logo = response.data.icons[0].src;
-                }
-            });
     }
 
     save = changes => {
@@ -40,13 +31,23 @@ class Institution {
                 rootStore.stopLoading('institution');
             });
     }
+
+    getLogo = () => {
+        axios.get(`https://favicongrabber.com/api/grab/${this.name}.com`)
+            .then(response => {
+                if (response.status === 200 && response.data && response.data.icons && response.data.icons.length > 0) {
+                    this.logo = response.data.icons[0].src;
+                }
+            });
+    }
 }
 
 decorate(Institution, {
     id: observable,
     name: observable,
     logo: observable,
-    save: action
+    save: action,
+    getLogo: action
 });
 
 export default Institution;

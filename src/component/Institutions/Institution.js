@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Card, CardHeader, CardContent, CardActions, IconButton, Avatar } from '@material-ui/core';
 import { observer } from 'mobx-react-lite';
 import { makeStyles } from '@material-ui/core';
@@ -32,6 +32,10 @@ const InstitutionCard = observer(({ institution }) => {
     const accountStore = useContext(AccountStoreContext);
     const [instutionModal, setInstitutionModal] = useState(null);
     const [accountModal, setAccountModal] = useState(null);
+
+    useEffect(() => {
+        institution.getLogo();
+    }, [institution.name])
 
     const openInstitutionModal = () => setInstitutionModal(
         <InstitutionModal
