@@ -21,7 +21,7 @@ export function getInstitutions() {
 }
 
 export function saveInstitution(institution) {
-    return institution.id
+    return institution.id != null
         ? put(`/api/institutions/${institution.id}`, institution)
         : post('/api/institutions/', institution);;
 }
@@ -31,7 +31,7 @@ export function getAccounts() {
 }
 
 export function saveAccount(account) {
-    return account.id
+    return account.id != null
         ? put(`/api/accounts/${account.id}`, account)
         : post('/api/accounts/', account);
 }
@@ -45,7 +45,7 @@ export function getBudgetGroups() {
 }
 
 export function saveBudgetGroup(budgetGroup) {
-    return budgetGroup.id
+    return budgetGroup.id != null
         ? put(`/api/budgets/groups/${budgetGroup.id}`, budgetGroup)
         : post('/api/budgets/groups/', budgetGroup);;
 }
@@ -59,7 +59,7 @@ export function getBudgetTemplates() {
 }
 
 export function saveBudgetTemplate(budgetTemplate) {
-    return budgetTemplate.id
+    return budgetTemplate.id != null
         ? put(`/api/budgets/templates/${budgetTemplate.id}`, budgetTemplate)
         : post('/api/budgets/templates/', budgetTemplate);;
 }
@@ -89,7 +89,7 @@ export function getTransactionForBudget(year, month) {
 }
 
 export function saveTransaction(transaction) {
-    return transaction.id
+    return transaction.id != null
         ? put(`/api/transactions/${transaction.id}`, transaction)
         : post('/api/transactions', transaction);
 }

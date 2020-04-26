@@ -27,7 +27,7 @@ class Transaction {
     }
 
     populate = transaction => {
-        this.id = transaction.id || '';
+        this.id = transaction.id;
         this.transactionDate = transaction.transactionDate || '';
         this.postDate = transaction.postDate || '';
         this.account = new Account(transaction.account || undefined);
@@ -98,6 +98,15 @@ class Transaction {
 
     save = (changes = {}) => {
         const transactionToSave = { ...this.savableObject(this), ...this.savableObject(changes) };
+
+        if(transactionToSave.monthBudget.id === ''){
+            transactionToSave.monthBudget = undefined;
+        }
+
+        if(transactionToSave.budgetCategory.id === ''){
+            transactionToSave.budgetCategory = undefined;
+        }
+
         const id = this.id;
         rootStore.startLoading(`transaction[${id}]`);
         return saveTransaction(transactionToSave)

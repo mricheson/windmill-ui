@@ -77,7 +77,7 @@ const TransactionModal = observer(({ transaction, onClose, onSave = () => { }, m
     const onIsPendingChange = event => setEditedIsPending(event.target.checked);
 
     const save = () => {
-        transaction.save({ 
+        transaction.save({
             budget: editedBudget,
             account: editedAccount,
             transactionDate: editedTransactionDate,
@@ -90,7 +90,7 @@ const TransactionModal = observer(({ transaction, onClose, onSave = () => { }, m
             isReimbursement: editedIsReimbursement,
             isPending: editedIsPending,
             isPayment: editedIsPayment,
-         })
+        })
             .then(() => onSave(transaction))
             .then(onClose);
     }
@@ -110,7 +110,7 @@ const TransactionModal = observer(({ transaction, onClose, onSave = () => { }, m
                     options={budgetStore.budgets}
                     getOptionLabel={budget => budget.id != null && moment(budget.date).format('YYYY - MMMM') || ''}
                     renderInput={(params) => <TextField {...params} label="Budget" />}
-                    value={editedBudget}
+                    value={editedBudget.id != null ? editedBudget : undefined}
                     onChange={onBudgetChange}
                     disabled={isSaving}
                     getOptionSelected={(option, value) => option.id === value.id}
@@ -119,7 +119,7 @@ const TransactionModal = observer(({ transaction, onClose, onSave = () => { }, m
                     options={accountStore.accounts}
                     getOptionLabel={account => account.id != null && `${account.name} (${account.institution.name})` || ''}
                     renderInput={(params) => <TextField {...params} label="Account" />}
-                    value={editedAccount}
+                    value={editedAccount.id != null ? editedAccount : undefined}
                     onChange={onAccountChange}
                     disabled={isSaving}
                     getOptionSelected={(option, value) => option.id === value.id}
@@ -166,9 +166,9 @@ const TransactionModal = observer(({ transaction, onClose, onSave = () => { }, m
                 />
                 <Autocomplete
                     options={categoryStore.budgetCategories}
-                    getOptionLabel={category => category.id !=='' && `${category.name} (${category.group.name})` || ''}
+                    getOptionLabel={category => category.id != null && `${category.name} (${category.group.name})` || ''}
                     renderInput={(params) => <TextField {...params} label="Category" />}
-                    value={editedCategory}
+                    value={editedCategory.id != null ? editedCategory : undefined}
                     onChange={onCategoryChange}
                     disabled={isSaving}
                     getOptionSelected={(option, value) => option.id === value.id}

@@ -132,10 +132,10 @@ const TransactionsForBudget = observer(() => {
                                             :
                                             <Autocomplete
                                                 options={categoryStore.budgetCategories}
-                                                getOptionLabel={category => (category.id !== '' && `${category.name} (${category.group.name})`) || ''}
-                                                getOptionSelected={(option, value) => value.id != null && option.id === value.id}
+                                                getOptionLabel={category => (category.id != null && `${category.name} (${category.group.name})`) || ''}
+                                                getOptionSelected={(option, value) => option.id === value.id}
                                                 renderInput={(params) => <TextField {...params} />}
-                                                value={transaction.category}
+                                                value={transaction.category.id != null ? transaction.category : undefined}
                                                 onChange={(event, newValue) => transaction.save({ category: newValue })}
                                             />
                                     }
