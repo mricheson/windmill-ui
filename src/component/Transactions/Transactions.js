@@ -118,7 +118,7 @@ const Transactions = observer(() => {
             <AddFooter
                 onAdd={openAddModal}
                 right={
-                    <Fab color="default" aria-label="add" onClick={()=>{console.log('upload')}}>
+                    <Fab color="default" onClick={()=>{console.log('upload')}}>
                         <BackupIcon />
                     </Fab>
                 }

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { TransactionStoreContext } from '../../store/TransactionStore';
-import { TableContainer, Table, makeStyles, TableHead, TableRow, TableCell, TableBody, CircularProgress, IconButton, TextField, Tooltip } from '@material-ui/core';
+import { TableContainer, Table, makeStyles, TableHead, TableRow, TableCell, TableBody, CircularProgress, IconButton, TextField, Tooltip, Icon, Fab } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import { observer } from 'mobx-react-lite';
 import TransactionIcon from './TransactionIcon';
@@ -16,6 +16,7 @@ import { AccountStoreContext } from '../../store/AccountStore';
 import { BudgetCategoryStoreContext } from '../../store/BudgetCategoryStore';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MessageIcon from '@material-ui/icons/Message';
+import BalanceModal from './BalanceModal';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -39,6 +40,10 @@ const useStyles = makeStyles(theme => ({
     categorySaving: {
         display: 'flex',
         justifyContent: 'center'
+    },
+    iconImage: {
+        textAlign: 'center',
+        width: 'inherit'
     }
 }))
 
@@ -73,6 +78,7 @@ const TransactionsForBudget = observer(() => {
     const rootStore = useContext(RootStoreContext);
     const [addModal, setAddModal] = useState(null);
     const [editModal, setEditModal] = useState(null);
+    const [balanceModal, setBalanceModal] = useState(null);
     const [budget, setBudget] = useState(null);
 
     useEffect(() => {
@@ -97,6 +103,10 @@ const TransactionsForBudget = observer(() => {
 
     const openEditModal = transaction => setEditModal(
         <TransactionModal transaction={transaction} onClose={() => setEditModal(null)} />
+    );
+
+    const openBalanceModal = transaction => setBalanceModal(
+        <BalanceModal onClose={() => setBalanceModal(null)} />
     );
 
     if (rootStore.loading.has('transactions')) {
@@ -155,9 +165,18 @@ const TransactionsForBudget = observer(() => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <AddFooter onAdd={openAddModal} />
+            <AddFooter
+                onAdd={openAddModal}
+                right={
+                    <Fab color="default" onClick={openBalanceModal}>
+                        <Icon className={classes.icon}>
+                            <img src="/balance.svg" alt="balances" className={classes.iconImage} />
+                        </Icon>
+                    </Fab>
+                } />
             {addModal}
             {editModal}
+            {balanceModal}
         </div >
     );
 });
