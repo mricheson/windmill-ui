@@ -99,9 +99,8 @@ const Transactions = observer(() => {
                                             <Autocomplete
                                                 options={budgetStore.budgets}
                                                 getOptionLabel={budget => budget.id != null && moment(budget.date).format('YYYY - MMMM') || ''}
-                                                getOptionSelected={(option, value) => option.id === value.id}
                                                 renderInput={(params) => <TextField {...params} />}
-                                                value={transaction.budget.id != null ? transaction.budget : undefined}
+                                                value={transaction.budget}
                                                 onChange={(event, newValue) => transaction.save({ budget: newValue })}
                                             />
                                     }

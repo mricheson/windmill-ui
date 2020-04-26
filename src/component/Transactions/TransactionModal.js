@@ -110,19 +110,17 @@ const TransactionModal = observer(({ transaction, onClose, onSave = () => { }, m
                     options={budgetStore.budgets}
                     getOptionLabel={budget => budget.id != null && moment(budget.date).format('YYYY - MMMM') || ''}
                     renderInput={(params) => <TextField {...params} label="Budget" />}
-                    value={editedBudget.id != null ? editedBudget : undefined}
+                    value={editedBudget}
                     onChange={onBudgetChange}
                     disabled={isSaving}
-                    getOptionSelected={(option, value) => option.id === value.id}
                 />
                 <Autocomplete
                     options={accountStore.accounts}
                     getOptionLabel={account => account.id != null && `${account.name} (${account.institution.name})` || ''}
                     renderInput={(params) => <TextField {...params} label="Account" />}
-                    value={editedAccount.id != null ? editedAccount : undefined}
+                    value={editedAccount}
                     onChange={onAccountChange}
                     disabled={isSaving}
-                    getOptionSelected={(option, value) => option.id === value.id}
                 />
             </div>
             <div className={classes.split}>
@@ -168,10 +166,9 @@ const TransactionModal = observer(({ transaction, onClose, onSave = () => { }, m
                     options={categoryStore.budgetCategories}
                     getOptionLabel={category => category.id != null && `${category.name} (${category.group.name})` || ''}
                     renderInput={(params) => <TextField {...params} label="Category" />}
-                    value={editedCategory.id != null ? editedCategory : undefined}
+                    value={editedCategory}
                     onChange={onCategoryChange}
                     disabled={isSaving}
-                    getOptionSelected={(option, value) => option.id === value.id}
                 />
             </div>
             <TextField

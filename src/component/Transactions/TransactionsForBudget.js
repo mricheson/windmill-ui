@@ -133,9 +133,8 @@ const TransactionsForBudget = observer(() => {
                                             <Autocomplete
                                                 options={categoryStore.budgetCategories}
                                                 getOptionLabel={category => (category.id != null && `${category.name} (${category.group.name})`) || ''}
-                                                getOptionSelected={(option, value) => option.id === value.id}
                                                 renderInput={(params) => <TextField {...params} />}
-                                                value={transaction.category.id != null ? transaction.category : undefined}
+                                                value={transaction.category}
                                                 onChange={(event, newValue) => transaction.save({ category: newValue })}
                                             />
                                     }
