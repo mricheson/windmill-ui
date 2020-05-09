@@ -40,20 +40,20 @@ const BudgetTemplateAmount = observer(({ budgetTemplate }) => {
     const [editedAmount, setEditedAmount] = useState(budgetTemplate.amount);
     const [editedCategory, setEditedCategory] = useState(budgetTemplate.category.id);
 
-    const onCategoryChange = event => setEditedCategory(event.target.value || '');
+    const onCategoryChange = event => setEditedCategory(event.target.value);
 
     const onNameChange = event => setEditedName(event.target.value);
 
     const onAmountChange = event => setEditedAmount(event.target.value);
 
     const canClear = editedName !== budgetTemplate.name
-        || editedAmount !== budgetTemplate.amount
-        || editedCategory !== budgetTemplate.category.id;
+        || +editedAmount !== budgetTemplate.amount
+        || (editedCategory !== undefined && editedCategory !== budgetTemplate.category.id);
 
-    const canSave = editedCategory && editedCategory !== '' && canClear;
+    const canSave = editedCategory !== undefined && canClear;
 
     const clear = () => {
-        setEditedCategory(budgetTemplate.category.id == null ? '' : budgetTemplate.category.id);
+        setEditedCategory(budgetTemplate.category.id);
         setEditedName(budgetTemplate.name);
         setEditedAmount(budgetTemplate.amount);
     };
