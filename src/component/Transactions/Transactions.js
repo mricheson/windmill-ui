@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { TransactionStoreContext } from '../../store/TransactionStore';
-import { TableContainer, Table, makeStyles, TableHead, TableRow, TableCell, TableBody, CircularProgress, IconButton, TextField, Fab } from '@material-ui/core';
+import { TableContainer, Table, makeStyles, TableHead, TableRow, TableCell, TableBody, CircularProgress, IconButton, TextField, Fab, Checkbox, TablePagination, Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import { observer } from 'mobx-react-lite';
 import EditIcon from '@material-ui/icons/Edit';
@@ -46,6 +46,8 @@ const Transactions = observer(() => {
     const [addModal, setAddModal] = useState(null);
     const [editModal, setEditModal] = useState(null);
     const [uploadModal, setUploadModal] = useState(null);
+    const [selected, setSelected] = useState([]);
+    const [page, setPage] = React.useState(0);
 
     useEffect(() => {
         transactionStore.load();
@@ -71,56 +73,107 @@ const Transactions = observer(() => {
         <UploadModal onClose={() => setUploadModal(null)} onSave={transactionStore.load} />
     );
 
+    const handleSelection = transactionId => event => {
+        const index = selected.findIndex(transaction => transaction === transactionId);
+        const newSelected = [...selected];
+
+        if (index === -1) {
+            newSelected.push(transactionId);
+        } else {
+            newSelected.splice(index, 1);
+        }
+
+        setSelected(newSelected);
+    }
+
+    const isSelected = transactionId => selected.findIndex(transaction => transaction === transactionId) !== -1;
+
+    const handleSelectedAction = action => {
+        selected.forEach(transactionId => action(transactionStore.transactions.find(transaction => transaction.id === transactionId)));
+        setSelected([]);
+    }
+
     if (rootStore.loading.has('transactions')) {
         return <CircularProgress />;
     }
 
     return (
         <div className={classes.root}>
-            <div>{`Transactions`}</div>
+            <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+                {`Transactions${selected.length > 0 ? ` (${selected.length} selected)` : ''}`}
+            </Typography>
             <TableContainer component={Paper}>
                 <Table className={classes.table} size="small">
                     <TableHead>
                         <TableRow>
+                            <TableCell padding="checkbox" />
                             <TableCell>Account</TableCell>
                             <TableCell>Date</TableCell>
                             <TableCell>Description</TableCell>
                             <TableCell>Amount</TableCell>
-                            <TableCell>Budget</TableCell>
+                            <TableCell className={classes.budget}>
+                                {selected.length > 0
+                                    ? (
+                                        <Autocomplete
+                                            options={budgetStore.budgets}
+                                            getOptionLabel={budget => budget.id != null && moment(budget.date).format('YYYY - MMMM') || ''}
+                                            renderInput={(params) => <TextField {...params} />}
+                                            onChange={(event, newValue) => handleSelectedAction(transaction => transaction.save({ budget: newValue }))}
+                                        />
+                                    )
+                                    : 'Budget'
+                                }
+                            </TableCell>
                             <TableCell></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {transactionStore.transactions.slice().sort((a, b) => (moment(a.transactionDate).isValid() && moment(b.transactionDate).isValid()) ? moment(b.transactionDate) - moment(a.transactionDate) : -1).map(transaction => (
-                            <TableRow key={transaction.id}>
-                                <TableCell>{transaction.account.institution.name}<br />{transaction.account.name}</TableCell>
-                                <TableCell>{moment(transaction.transactionDate).isValid() ? moment(transaction.transactionDate).format('M/D/YY') : ''}</TableCell>
-                                <TableCell>{transaction.description}</TableCell>
-                                <TableCell align="right">{formatter.format(transaction.amount)}</TableCell>
-                                <TableCell className={classes.budget}>
-                                    {
-                                        rootStore.loading.has(`transaction[${transaction.id}]`)
-                                            ? <div className={classes.budgetSaving}><CircularProgress size={32} /></div>
-                                            :
-                                            <Autocomplete
-                                                options={budgetStore.budgets}
-                                                getOptionLabel={budget => budget.id != null && moment(budget.date).format('YYYY - MMMM') || ''}
-                                                renderInput={(params) => <TextField {...params} />}
-                                                value={transaction.budget}
-                                                onChange={(event, newValue) => transaction.save({ budget: newValue })}
-                                            />
-                                    }
-                                </TableCell>
-                                <TableCell>
-                                    <IconButton onClick={() => openEditModal(transaction)}>
-                                        <EditIcon color="disabled" />
-                                    </IconButton>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                        {transactionStore.transactions.slice(page * 50, page * 50 + 50)
+                            .sort((a, b) => (moment(a.transactionDate).isValid() && moment(b.transactionDate).isValid()) ? moment(b.transactionDate) - moment(a.transactionDate) : -1)
+                            .map(transaction => (
+                                <TableRow key={transaction.id}>
+                                    <TableCell padding="checkbox">
+                                        <Checkbox
+                                            checked={isSelected(transaction.id)}
+                                            onChange={handleSelection(transaction.id)}
+                                        />
+                                    </TableCell>
+                                    <TableCell>{transaction.account.institution.name}<br />{transaction.account.name}</TableCell>
+                                    <TableCell>{moment(transaction.transactionDate).isValid() ? moment(transaction.transactionDate).format('M/D/YY') : ''}</TableCell>
+                                    <TableCell>{transaction.description}</TableCell>
+                                    <TableCell align="right">{formatter.format(transaction.amount)}</TableCell>
+                                    <TableCell className={classes.budget}>
+                                        {
+                                            rootStore.loading.has(`transaction[${transaction.id}]`)
+                                                ? <div className={classes.budgetSaving}><CircularProgress size={32} /></div>
+                                                :
+                                                <Autocomplete
+                                                    options={budgetStore.budgets}
+                                                    getOptionLabel={budget => budget.id != null && moment(budget.date).format('YYYY - MMMM') || ''}
+                                                    renderInput={(params) => <TextField {...params} />}
+                                                    value={transaction.budget}
+                                                    onChange={(event, newValue) => transaction.save({ budget: newValue })}
+                                                />
+                                        }
+                                    </TableCell>
+                                    <TableCell>
+                                        <IconButton onClick={() => openEditModal(transaction)}>
+                                            <EditIcon color="disabled" />
+                                        </IconButton>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                     </TableBody>
                 </Table>
             </TableContainer>
+            <TablePagination
+                component="div"
+                count={transactionStore.transactions.length}
+                rowsPerPage={50}
+                rowsPerPageOptions={[50]}
+                page={page}
+                onChangePage={(event, newPage) => setPage(newPage)}
+            />
             <AddFooter
                 onAdd={openAddModal}
                 right={
