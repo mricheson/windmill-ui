@@ -128,8 +128,9 @@ const Transactions = observer(() => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {transactionStore.transactions.slice(page * 50, page * 50 + 50)
+                        {transactionStore.transactions.slice()
                             .sort((a, b) => (moment(a.transactionDate).isValid() && moment(b.transactionDate).isValid()) ? moment(b.transactionDate) - moment(a.transactionDate) : -1)
+                            .slice(page * 50, page * 50 + 50)
                             .map(transaction => (
                                 <TableRow key={transaction.id}>
                                     <TableCell padding="checkbox">
