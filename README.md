@@ -66,3 +66,20 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+## Tools 
+
+### Google login
+--https://www.npmjs.com/package/react-google-login
+--https://medium.com/@premdas.92/user-login-and-logout-with-google-auth-in-a-react-application-d1e834de4c39
+https://console.developers.google.com/apis/credentials?project=windmill-274104&supportedpurview=project
+https://www.callicoder.com/spring-boot-security-oauth2-social-login-part-3/
+https://github.com/callicoder/spring-boot-react-oauth2-social-login-demo
+
+### Material UI
+https://material-ui.com/
+### MobX
+https://mobx-react.js.org/
+https://www.google.com/search?q=react+mobx+hooks&rlz=1C1CHBF_enUS737US740&oq=react+mobx+hooks+&aqs=chrome..69i57j0l5j69i60l2.6086j0j7&sourceid=chrome&ie=UTF-8#kpvalbx=_aEubXpePDdHysQXm0ISYDw28
+### React Router
+https://reacttraining.com/react-router/web/guides/quick-start
