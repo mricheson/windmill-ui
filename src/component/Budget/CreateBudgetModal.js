@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { Dialog, Slide, DialogTitle, DialogContent, DialogActions, Button } from '@material-ui/core';
 import { observer } from 'mobx-react-lite';
 import { DatePicker } from "@material-ui/pickers";
+import moment from 'moment';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const CreateBudgetModal = observer(({ onClose, onCreate }) => {
-    const [selectedDate, handleDateChange] = useState(new Date());
+    const [selectedDate, handleDateChange] = useState(moment());
 
     const handleCreate = () => {
         onCreate(selectedDate)

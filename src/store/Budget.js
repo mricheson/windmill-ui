@@ -21,10 +21,10 @@ class Budget {
     }
 
     loadCategories = () => {
-        const date = new Date(this.date);
+        const date = moment(this.date);
         rootStore.startLoading('monthBudgetCategories');
 
-        return getMonthBudgetCategories(date.getFullYear(), date.getMonth() + 1)
+        return getMonthBudgetCategories(date.year(), date.month() + 1)
             .then(response => {
                 this.categories = response.data;
             })

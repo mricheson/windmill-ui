@@ -67,7 +67,7 @@ const BudtgetTemplate = observer(() => {
     const openCreateBudgetModal = () => setCreateBudgetModal(
         <CreateBudgetModal
             onClose={() => setCreateBudgetModal(null)}
-            onCreate={date => budgetStore.create(date.getFullYear(), date.getMonth() + 1)}
+            onCreate={date => budgetStore.create(date.year(), date.month() + 1)}
         />
     );
 
