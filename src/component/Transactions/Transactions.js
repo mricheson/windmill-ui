@@ -73,12 +73,12 @@ const Transactions = observer(() => {
         <UploadModal onClose={() => setUploadModal(null)} onSave={transactionStore.load} />
     );
 
-    const handleSelection = transactionId => event => {
-        const index = selected.findIndex(transaction => transaction === transactionId);
+    const handleSelection = transaction => event => {
+        const index = selected.findIndex(_transaction => _transaction.id === transaction.id);
         const newSelected = [...selected];
 
         if (index === -1) {
-            newSelected.push(transactionId);
+            newSelected.push(transaction);
         } else {
             newSelected.splice(index, 1);
         }
@@ -86,11 +86,12 @@ const Transactions = observer(() => {
         setSelected(newSelected);
     }
 
-    const isSelected = transactionId => selected.findIndex(transaction => transaction === transactionId) !== -1;
+    const isSelected = transactionId => selected.findIndex(transaction => transaction.id === transactionId) !== -1;
 
     const handleSelectedAction = action => {
-        selected.forEach(transactionId => action(transactionStore.transactions.find(transaction => transaction.id === transactionId)));
+        selected.forEach(transaction => action(transaction));
         setSelected([]);
+        transactionStore.load();
     }
 
     if (rootStore.loading.has('transactions')) {
@@ -128,15 +129,14 @@ const Transactions = observer(() => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {transactionStore.transactions.slice()
-                            .sort((a, b) => (moment(a.transactionDate).isValid() && moment(b.transactionDate).isValid()) ? moment(b.transactionDate) - moment(a.transactionDate) : -1)
+                        {transactionStore.transactions
                             .slice(page * 50, page * 50 + 50)
                             .map(transaction => (
                                 <TableRow key={transaction.id}>
                                     <TableCell padding="checkbox">
                                         <Checkbox
                                             checked={isSelected(transaction.id)}
-                                            onChange={handleSelection(transaction.id)}
+                                            onChange={handleSelection(transaction)}
                                         />
                                     </TableCell>
                                     <TableCell>{transaction.account.institution.name}<br />{transaction.account.name}</TableCell>
