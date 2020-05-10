@@ -89,9 +89,11 @@ const Transactions = observer(() => {
     const isSelected = transactionId => selected.findIndex(transaction => transaction.id === transactionId) !== -1;
 
     const handleSelectedAction = action => {
-        selected.forEach(transaction => action(transaction));
-        setSelected([]);
-        transactionStore.load();
+        Promise.all(selected.map(transaction => action(transaction)))
+            .then(() => {
+                setSelected([]);
+                transactionStore.load();
+            });
     }
 
     if (rootStore.loading.has('transactions')) {
